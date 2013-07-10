@@ -23,15 +23,16 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
             foreach (var assembly in assemblies)
             {
-                if (assembly != null)
+                if (assembly == null)
                 {
-                    var assemblyPublicEnums =
-                        (from publicEnumType in assembly.GetTypes().GetPublicEnums().AsParallel()
-                         where enumNamespaceFilter(publicEnumType.Namespace)
-                         select publicEnumType
-                        ).ToList();
-                    enumTypes.AddRange(assemblyPublicEnums);
+                    continue;
                 }
+                var assemblyPublicEnums =
+                    (from publicEnumType in assembly.GetTypes().GetPublicEnums()
+                     where enumNamespaceFilter(publicEnumType.Namespace)
+                     select publicEnumType
+                    ).ToList();
+                enumTypes.AddRange(assemblyPublicEnums);
             }
             return new HashSet<Type>(enumTypes);
         }

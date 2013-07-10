@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using SomeOtherNamespace;
 using Xunit;
 
@@ -92,27 +90,10 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void GetPublicEnums_FilterThrowsException_ExceptionPassedUpInAggregate()
         {
             var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly()};
-            Assert.Throws<AggregateException>(
+            Assert.Throws<NotImplementedException>(
                 () =>
                 {
-                    try
-                    {
-                        assemblies.GetPublicEnums(s => { throw new NotImplementedException(); });
-                    }
-                    catch (AggregateException ex)
-                    {
-                        Assert.Equal(
-                            2,
-                            ex.InnerExceptions
-                              .ToList()
-                              .FindAll(x => x.GetType() == typeof (NotImplementedException))
-                              .Count);
-                        throw;
-                    }
-                    catch (Exception)
-                    {
-                        Assert.True(false, "Expected AggregateException");
-                    }
+                    assemblies.GetPublicEnums(s => { throw new NotImplementedException(); });
                 });
         }
     }
