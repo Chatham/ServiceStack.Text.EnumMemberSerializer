@@ -7,14 +7,14 @@ Custom enumeration serialization currently only applies to the json serializer. 
 
 #Example Configuration
 
-Configure Explicit Enumerations
+Configure explicit enumerations:
 ```c#
 new EnumSerializerConfigurator()
   .WithEnumTypes(new Type[] { typeof(ReturnPolicy) })
   .Configure();
 ```
 
-Configure all enumerations in the ExampleCode namespce for all assemblies in my current app domain:
+Configure all enumerations in the ExampleCode namespace for all assemblies in my current app domain:
 ```c#
 new EnumSerializerConfigurator()
   .WithAssemblies(AppDomain.CurrentDomain.GetAssemblies())
