@@ -74,7 +74,7 @@ task Pack -depends Test {
 task SetVersion {
     $completeVersionNumber = Get-VersionNumber 
   
-    if(![string]::IsNullOrEmpty($buildNumber))
+    if(!$completeVersionNumber.EndsWith(".*"))
     {
       #running in TeamCity
       Write-Host "##teamcity[buildNumber '$completeVersionNumber']"
