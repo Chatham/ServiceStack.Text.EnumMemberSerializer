@@ -1,10 +1,8 @@
 ServiceStack.Text.EnumMemberSerializer
 ======================================
 
-Extension for ServiceStack.Text to allow using EnumMember attributes to serialize and deserialize enumerations.
+Extension for ServiceStack.Text to allow using EnumMember attributes to serialize and deserialize enumerations. This allows you to use more human readable values while still leveraging the benefits of using enumerations.
 
-Example
-======================================
 #Example Configuration
 
 Configure Explicit Enumerations
@@ -69,7 +67,7 @@ http://myhost/products?returnpolicy=1
 
 #Example Response
 
-With ServiceStack.Text.EnumMemberSerializer you get this:
+With ServiceStack.Text.EnumMemberSerializer:
 ```JSON
 [
    {
@@ -83,7 +81,7 @@ With ServiceStack.Text.EnumMemberSerializer you get this:
 ]
 ```
 
-Without ServiceStack.Text.EnumMemberSerializer
+Without ServiceStack.Text.EnumMemberSerializer:
 ```JSON
 [
    {
@@ -96,3 +94,12 @@ Without ServiceStack.Text.EnumMemberSerializer
    }
 ]
 ```
+
+#Using the Code
+
+* Install the NuGet Package (pending package push)
+* You can check out the code and run build.bat.
+  * It will create NuGet packages you can consume in `.\ReleasePackages` or you can directly use the resulting binaries. 
+* Build requirements
+  * .Net 4.0
+  * Powershell 2.0
