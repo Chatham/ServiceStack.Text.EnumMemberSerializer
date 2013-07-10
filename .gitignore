@@ -1,0 +1,7 @@
+/src/ServiceStack.Text.EnumMemberSerializer.UnitTests/bin
+/src/ServiceStack.Text.EnumMemberSerializer.UnitTests/obj
+/src/ServiceStack.Text.EnumMemberSerializer/bin
+/src/ServiceStack.Text.EnumMemberSerializer/obj
+/ReleasePackages
+/src/TestResults
+/src/*.suo

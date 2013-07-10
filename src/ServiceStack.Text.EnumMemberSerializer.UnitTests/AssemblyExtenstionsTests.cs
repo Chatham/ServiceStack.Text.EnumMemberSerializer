@@ -1,0 +1,119 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using SomeOtherNamespace;
+using Xunit;
+
+namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
+{
+    public class AssemblyExtenstionsTests
+    {
+        [Fact]
+        public void GetPublicEnums_UnitTestClassNoFilter_ReturnsBothEnums()
+        {
+            var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly()};
+            var publicEnums = assemblies.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
+
+            Assert.Equal(2, publicEnums.Count);
+            Assert.True(publicEnums.Contains(typeof (FakeTestingEnum)));
+            Assert.True(publicEnums.Contains(typeof (DifferentNamespaceEnum)));
+        }
+
+        [Fact]
+        public void GetPublicEnums_UnitTestClassWithFilter_ReturnsDifferentNamespaceEnum()
+        {
+            var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly()};
+            var publicEnums = assemblies.GetPublicEnums(s => s.StartsWith("SomeOtherNamespace"));
+
+            Assert.Equal(1, publicEnums.Count);
+            Assert.Equal(typeof (DifferentNamespaceEnum), publicEnums.First());
+        }
+
+        [Fact]
+        public void GetPublicEnums_DuplicateAssemblyInList_ReturnsBothDistinctEnums()
+        {
+            var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly(), Assembly.GetExecutingAssembly()};
+            var publicEnums = assemblies.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
+
+            Assert.Equal(2, publicEnums.Count);
+            Assert.True(publicEnums.Contains(typeof(FakeTestingEnum)));
+            Assert.True(publicEnums.Contains(typeof(DifferentNamespaceEnum)));
+        }
+
+        [Fact]
+        public void GetPublicEnums_EmptyAssemblyList_EmptyTypes()
+        {
+            var emptyAssemblyList = new List<Assembly>();
+            var publicEnums = emptyAssemblyList.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
+            Assert.Equal(0, publicEnums.Count);
+        }
+
+        [Fact]
+        public void GetPublicEnums_NullAssemblyList_EmptyTypes()
+        {
+            List<Assembly> emptyAssemblyList = null;
+            var publicEnums = emptyAssemblyList.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
+            Assert.Equal(0, publicEnums.Count);
+        }
+
+        [Fact]
+        public void GetPublicEnums_UnitTestClassNullFilter_ReturnsBothEnums()
+        {
+            var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly()};
+            var publicEnums = assemblies.GetPublicEnums(null);
+
+            Assert.Equal(2, publicEnums.Count);
+            Assert.True(publicEnums.Contains(typeof (FakeTestingEnum)));
+            Assert.True(publicEnums.Contains(typeof (DifferentNamespaceEnum)));
+        }
+
+        [Fact]
+        public void GetPublicEnums_UnitTestClassWithAlwaysFalseFilter_ReturnsEmptyTypeList()
+        {
+            var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly()};
+            var publicEnums = assemblies.GetPublicEnums(s => false);
+
+            Assert.Equal(0, publicEnums.Count);
+        }
+
+        [Fact]
+        public void GetPublicEnums_ListOfNullAssemblies_ReturnsEmtpyTypeList()
+        {
+            var assemblies = new List<Assembly> {null};
+            var publicEnums = assemblies.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
+
+            Assert.Equal(0, publicEnums.Count);
+        }
+
+        [Fact]
+        public void GetPublicEnums_FilterThrowsException_ExceptionPassedUpInAggregate()
+        {
+            var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly()};
+            Assert.Throws<AggregateException>(
+                () =>
+                {
+                    try
+                    {
+                        assemblies.GetPublicEnums(s => { throw new NotImplementedException(); });
+                    }
+                    catch (AggregateException ex)
+                    {
+                        Assert.Equal(
+                            2,
+                            ex.InnerExceptions
+                              .ToList()
+                              .FindAll(x => x.GetType() == typeof (NotImplementedException))
+                              .Count);
+                        throw;
+                    }
+                    catch (Exception)
+                    {
+                        Assert.True(false, "Expected AggregateException");
+                    }
+                });
+        }
+    }
+}
