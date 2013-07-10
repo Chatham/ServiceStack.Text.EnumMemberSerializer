@@ -1,7 +1,9 @@
 ServiceStack.Text.EnumMemberSerializer
 ======================================
 
-Extension for ServiceStack.Text to allow using EnumMember attributes to serialize and deserialize enumerations. This allows you to use more human readable values while still leveraging the benefits of using enumerations.
+Extension for [`ServiceStack.Text`](https://github.com/ServiceStack/ServiceStack.Text) to allow using [`EnumMemberAttribute`](http://msdn.microsoft.com/en-us/library/system.runtime.serialization.enummemberattribute.aspx) to serialize and deserialize enumerations. This allows you to use more human readable values while still leveraging the benefits of using enumerations.
+
+Custom enumeration serialization currently only applies to the json serializer. It works by assigning custom delegates to [`JsConfig<T>.SerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs) and [`JsConfig<T>.DeSerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs).
 
 #Example Configuration
 
@@ -94,6 +96,12 @@ Without ServiceStack.Text.EnumMemberSerializer:
    }
 ]
 ```
+#Considerations
+* Only configures public enumerations.
+* `.WithNamespaceFilter()` only applies to filtering public enums found in the assemblies passed in using `.WithAssemblies()`. Any enumerations explicitly identified `.WithEnumTypes()` will not be filtered by namespace. The namespace filter applies to all provided assemblies.
+* Multiple calls to `.WithEnumTypes()` and `.WithNamespaceFilter()` will be added and not replace previous specified values.
+* This manipulates the static `JsConfig<T>`. Other code called later may overwrite the custom serialization/deserialization delegates.
+* Both `.WithEnumTypes()` and `.WithAssemblies()` may be used at the same time, the results will be combined.
 
 #Using the Code
 
