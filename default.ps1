@@ -5,6 +5,26 @@ if((Get-Module | Where-Object {$_.Name -eq "psake"}) -eq $null)
         Import-Module .\tools\psake.4.2.0.1\tools\psake.psm1
     } 
 Import-Module .\tools\SetVersion.psm1
+
+function Get-VersionNumber
+{
+  $completeVersionNumber = ""
+
+  $buildNumber = $Env:BUILD_NUMBER
+  
+  if([string]::IsNullOrEmpty($buildNumber))
+  {
+    $completeVersionNumber = $majorMinorVersion + ".*"
+  }
+  else
+  {
+    #running in TeamCity
+    $completeVersionNumber = $majorMinorVersion + "." + $buildNumber
+  }
+
+  return ,$completeVersionNumber
+}
+
 properties {
     $configuration = "Release"
     $rootLocation = get-location
@@ -19,7 +39,7 @@ properties {
     $nugetOutputDir = ".\ReleasePackages"
     $nugetExe = "$rootLocation\tools\nuget\nuget.exe"
     $versionFile = ".\MajorMinorVersion.txt"
-    $completeVersionNumber = ""
+    $majorMinorVersion = Get-Content $versionFile
 }
 
 task Default -depends Pack
@@ -39,9 +59,10 @@ task Test -depends Compile {
 task Pack -depends Test {
   mkdir -p "$nugetOutputDir" -force
 
+  $completeVersionNumber = Get-VersionNumber
   $versionSwitch = ""
 
-  if(!$completeVersionNumber.EndsWith(".*")
+  if(!$completeVersionNumber.EndsWith(".*"))
   {
     $versionSwitch = "-Version $completeVersionNumber"
   }
@@ -50,22 +71,16 @@ task Pack -depends Test {
 }
 
 task SetVersion {
-  $majorMinorVersion = Get-Content $versionFile
 
-  $buildNumber = $Env:BUILD_NUMBER
+  $completeVersionNumber = Get-VersionNumber
   
-  if([string]::IsNullOrEmpty($buildNumber))
-  {
-    $completeVersionNumber = $majorMinorVersion + ".*"
-  }
-  else
+  if(![string]::IsNullOrEmpty($buildNumber))
   {
     #running in TeamCity
-    $completeVersionNumber = $majorMinorVersion + "." + $buildNumber
     Write-Host "##teamcity[buildNumber '$completeVersionNumber']"
   }
-  
-  write-host "Setting version to $completeVersionNumber"
+ 
+  Write-Host "Setting version to $completeVersionNumber"
   
   Set-Version $completeVersionNumber
 }
