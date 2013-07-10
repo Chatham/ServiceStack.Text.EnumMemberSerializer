@@ -49,7 +49,7 @@
     <Compile Include="EnumSerializerHelpersProxy.cs" />
     <Compile Include="EnumTypeExtensions.cs" />
     <Compile Include="FieldInfoExtensions.cs" />
-    <Compile Include="IJsConfigProxy.cs" />
+    <Compile Include="IEnumSerializerHelpersProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
