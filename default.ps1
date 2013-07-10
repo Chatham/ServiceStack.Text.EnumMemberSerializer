@@ -40,6 +40,15 @@ properties {
     $nugetExe = "$rootLocation\tools\nuget\nuget.exe"
     $versionFile = ".\MajorMinorVersion.txt"
     $majorMinorVersion = Get-Content $versionFile
+    $completeVersionNumber = Get-VersionNumber
+    $versionSwitch = ""
+    
+    if(!$completeVersionNumber.EndsWith(".*"))
+    {
+      #running in TeamCity
+      $versionSwitch = "-Version $completeVersionNumber"
+      Write-Host "##teamcity[buildNumber '$completeVersionNumber']"
+    }
 }
 
 task Default -depends Pack
@@ -60,28 +69,11 @@ task Pack -depends Test {
   mkdir -p "$nugetOutputDir" -force
 
   $completeVersionNumber = Get-VersionNumber
-  $versionSwitch = ""
-
-  if(!$completeVersionNumber.EndsWith(".*"))
-  {
-    $versionSwitch = "-Version $completeVersionNumber"
-  }
-
-    exec { invoke-expression "& '$nugetExe' pack '$csprojFile' -Symbols -Properties Configuration=$configuration -OutputDirectory '$nugetOutputDir' $versionSwitch"
-  }
+  exec { invoke-expression "& '$nugetExe' pack '$csprojFile' -Symbols -Properties Configuration=$configuration -OutputDirectory '$nugetOutputDir' $versionSwitch" }
 }
 
 task SetVersion {
-    $completeVersionNumber = Get-VersionNumber 
-  
-    if(!$completeVersionNumber.EndsWith(".*"))
-    {
-      #running in TeamCity
-      Write-Host "##teamcity[buildNumber '$completeVersionNumber']"
-    }
- 
-    Write-Host "Setting version to $completeVersionNumber"
- 
-    Set-Version $completeVersionNumber
+  Write-Host "Setting version to $completeVersionNumber"
+  Set-Version $completeVersionNumber
 }
 
