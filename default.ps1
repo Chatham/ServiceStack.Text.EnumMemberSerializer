@@ -47,10 +47,14 @@ task SetVersion {
   
   if([string]::IsNullOrEmpty($buildNumber))
   {
-    $buildNumer = "*";
+    $completeVersionNumber = $majorMinorVersion + ".*"
   }
-
-  $completeVersionNumber = $majorMinorVersion + "." + $buildNumer
+  else
+  {
+    #running in TeamCity
+    $completeVersionNumber = $majorMinorVersion + $buildNumber
+    Write-Host "##teamcity[buildNumber '$completeVersionNumber']"
+  }
   
   write-host "Setting version to $completeVersionNumber"
   
