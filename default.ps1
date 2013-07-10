@@ -52,7 +52,7 @@ task SetVersion {
   else
   {
     #running in TeamCity
-    $completeVersionNumber = $majorMinorVersion + $buildNumber
+    $completeVersionNumber = $majorMinorVersion + "." + $buildNumber
     Write-Host "##teamcity[buildNumber '$completeVersionNumber']"
   }
   
