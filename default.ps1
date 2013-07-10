@@ -45,15 +45,15 @@ properties {
 task Default -depends Pack
 
 task Clean -depends SetVersion {
-  msbuild "$slnFile" /t:Clean /p:Configuration=$configuration
+  exec { msbuild "$slnFile" /t:Clean /p:Configuration=$configuration }
 }
 
 task Compile -depends Clean {
-  msbuild "$slnFile" /p:Configuration=$configuration 
+  exec { msbuild "$slnFile" /p:Configuration=$configuration }
 }
 
 task Test -depends Compile {
-  .$xunitRunner "$testDll"
+  exec { .$xunitRunner "$testDll" }
 }
 
 task Pack -depends Test {
@@ -67,21 +67,21 @@ task Pack -depends Test {
     $versionSwitch = "-Version $completeVersionNumber"
   }
 
-  invoke-expression "& '$nugetExe' pack '$csprojFile' -Symbols -Properties Configuration=$configuration -OutputDirectory '$nugetOutputDir' $versionSwitch"
+    exec { invoke-expression "& '$nugetExe' pack '$csprojFile' -Symbols -Properties Configuration=$configuration -OutputDirectory '$nugetOutputDir' $versionSwitch"
+  }
 }
 
 task SetVersion {
-
-  $completeVersionNumber = Get-VersionNumber
+    $completeVersionNumber = Get-VersionNumber 
   
-  if(![string]::IsNullOrEmpty($buildNumber))
-  {
-    #running in TeamCity
-    Write-Host "##teamcity[buildNumber '$completeVersionNumber']"
-  }
+    if(![string]::IsNullOrEmpty($buildNumber))
+    {
+      #running in TeamCity
+      Write-Host "##teamcity[buildNumber '$completeVersionNumber']"
+    }
  
-  Write-Host "Setting version to $completeVersionNumber"
-  
-  Set-Version $completeVersionNumber
+    Write-Host "Setting version to $completeVersionNumber"
+ 
+    Set-Version $completeVersionNumber
 }
 
