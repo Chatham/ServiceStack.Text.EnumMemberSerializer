@@ -19,6 +19,7 @@ properties {
     $nugetOutputDir = ".\ReleasePackages"
     $nugetExe = "$rootLocation\tools\nuget\nuget.exe"
     $versionFile = ".\MajorMinorVersion.txt"
+    $completeVersionNumber = ""
 }
 
 task Default -depends Pack
@@ -37,7 +38,15 @@ task Test -depends Compile {
 
 task Pack -depends Test {
   mkdir -p "$nugetOutputDir" -force
-  invoke-expression "& '$nugetExe' pack '$csprojFile' -Symbols -Properties Configuration=$configuration -OutputDirectory '$nugetOutputDir'"
+
+  $versionSwitch = ""
+
+  if(!$completeVersionNumber.EndsWith(".*")
+  {
+    $versionSwitch = "-Version $completeVersionNumber"
+  }
+
+  invoke-expression "& '$nugetExe' pack '$csprojFile' -Symbols -Properties Configuration=$configuration -OutputDirectory '$nugetOutputDir' $versionSwitch"
 }
 
 task SetVersion {
