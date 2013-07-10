@@ -22,7 +22,7 @@ new EnumSerializerConfigurator()
   .Configure();
 ```
 
-#Example Enumeration:
+#Example Enumeration
 ```c#
 using System.Runtime.Serialization;
 
