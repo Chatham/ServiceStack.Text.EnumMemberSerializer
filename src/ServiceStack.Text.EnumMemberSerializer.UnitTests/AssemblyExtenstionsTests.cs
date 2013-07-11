@@ -87,7 +87,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         }
 
         [Fact]
-        public void GetPublicEnums_FilterThrowsException_ExceptionPassedUpInAggregate()
+        public void GetPublicEnums_FilterThrowsException_ExceptionPassedUp()
         {
             var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly()};
             Assert.Throws<NotImplementedException>(
