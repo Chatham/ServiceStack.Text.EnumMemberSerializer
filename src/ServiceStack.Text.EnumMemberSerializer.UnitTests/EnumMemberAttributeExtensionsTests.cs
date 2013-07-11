@@ -22,6 +22,13 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         }
 
         [Fact]
+        public void MatchesDescription_WhiteSpacePaddedConstantNameUsed_True()
+        {
+            var attribute = new EnumMemberAttribute { Value = MyEnumMemberValue };
+            Assert.True(attribute.MatchesDescription("  " + MyEnumMemberValue + "\t\r\t  "));
+        }
+
+        [Fact]
         public void MatchesDescription_NullFieldNameNonNullDescript_False()
         {
             var attribute = new EnumMemberAttribute { Value = null };

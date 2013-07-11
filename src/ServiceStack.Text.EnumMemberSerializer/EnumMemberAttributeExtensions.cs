@@ -8,7 +8,9 @@ namespace ServiceStack.Text.EnumMemberSerializer
         public static bool MatchesDescription(this EnumMemberAttribute attribute, string description)
         {
             return
-                attribute != null && string.Equals(attribute.Value, description, StringComparison.OrdinalIgnoreCase);
+                attribute != null
+                && string.Equals(
+                    attribute.Value, (description ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase);
         }
     }
 }

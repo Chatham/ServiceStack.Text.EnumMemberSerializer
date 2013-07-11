@@ -7,7 +7,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
     {
         public static bool MatchesDescription(this FieldInfo field, string description)
         {
-            return string.Equals(field.Name, description, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(field.Name, (description ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase);
         }
     }
 }

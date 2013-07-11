@@ -32,7 +32,14 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum("YoURvaLuE");
             Assert.Equal(FakeTestingEnum.YourValue, deserializedEnum);
         }
-        
+
+        [Fact]
+        public void DeserializeEnum_WhitespacePaddedEnum_ResturnsCorrectEnum()
+        {
+            var deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum("\tYourValue  ");
+            Assert.Equal(FakeTestingEnum.YourValue, deserializedEnum);
+        }
+
         [Fact]
         public void DeserializeEnum_FromEnumMemberAttributeName_ReturnsCorrectEnum()
         {
@@ -41,11 +48,12 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         }
 
         [Fact]
-        public void DeserializeEnum_WhitespacePaddedEnum_ResturnsCorrectEnum()
+        public void DeserializeEnum_WhiteSpacePaddedEnumMemberAttrName_ReturnsCorrectEnum()
         {
-            var deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum("\tYourValue  ");
+            var deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum("\tYour Value is worse  ");
             Assert.Equal(FakeTestingEnum.YourValue, deserializedEnum);
         }
+
 
         [Fact]
         public void DeserializeEnum_NonEnumType_ThrowsException()
