@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>ServiceStack.Text</id>
-    <version>3.9.49</version>
+    <version>3.9.44</version>
     <title>.NET's fastest JSON Serializer by ServiceStack</title>
     <authors>Demis Bellot</authors>
     <owners>Demis Bellot</owners>
@@ -17,6 +17,7 @@
           - WebRequest, List, Dictionary and DateTime extensions</description>
     <summary>.NET's fastest JSON, JSV and CSV Text Serializers</summary>
     <copyright>ServiceStack 2013 and contributors</copyright>
+    <language>en-US</language>
     <tags>JSON Text Serializer CSV JSV Dump PrettyPrint Fast</tags>
   </metadata>
 </package>
