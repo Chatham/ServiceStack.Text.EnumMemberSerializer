@@ -105,7 +105,7 @@ Without ServiceStack.Text.EnumMemberSerializer:
 
 #Using the Code
 
-* Install the NuGet Package (pending package push)
+* [Install the NuGet Package](https://nuget.org/packages/ServiceStack.Text.EnumMemberSerializer/)
 * You can check out the code and run build.bat.
   * It will create NuGet packages you can consume in `.\ReleasePackages` or you can directly use the resulting binaries. 
 * Build requirements
