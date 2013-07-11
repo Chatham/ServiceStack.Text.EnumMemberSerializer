@@ -7,7 +7,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
     /// <summary>
     ///     Fluent configuration for the enum member enumeration serializer
     /// </summary>
-    public sealed class EnumSerializerConfigurator
+    public sealed class EnumSerializerConfigurator : IEnumSerializerConfigurator
     {
         private readonly HashSet<Assembly> _assembliesToScan = new HashSet<Assembly>();
         private readonly HashSet<Type> _enumTypes = new HashSet<Type>();
@@ -32,7 +32,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
         ///     This filter applies to the types found in the provided assembly list.
         /// </summary>
         /// <param name="enumNamespaceFilter">Returns true for an acceptable namespace.</param>
-        public EnumSerializerConfigurator WithNamespaceFilter(Func<string, bool> enumNamespaceFilter)
+        public IEnumSerializerConfigurator WithNamespaceFilter(Func<string, bool> enumNamespaceFilter)
         {
             if (enumNamespaceFilter != null)
             {
@@ -47,7 +47,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
         ///     Multiple calls will add to the existing list.
         /// </summary>
         /// <param name="assembliesToScan"></param>
-        public EnumSerializerConfigurator WithAssemblies(ICollection<Assembly> assembliesToScan)
+        public IEnumSerializerConfigurator WithAssemblies(ICollection<Assembly> assembliesToScan)
         {
             if (!assembliesToScan.IsEmpty())
             {
@@ -67,7 +67,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
         ///     Allows individual enumeration types to be specified.
         ///     Multiple calls will add to the existing list.
         /// </summary>
-        public EnumSerializerConfigurator WithEnumTypes(ICollection<Type> enumTypes)
+        public IEnumSerializerConfigurator WithEnumTypes(ICollection<Type> enumTypes)
         {
             if (!enumTypes.IsEmpty())
             {
