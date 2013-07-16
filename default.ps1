@@ -71,6 +71,9 @@ task SetReleaseNotes -depends Test {
 
   if(![string]::IsNullOrEmpty($releaseNotes))
   {
+    Write-Host "Setting release notes to:"
+    Write-Host "$releaseNotes"
+
     $nuspecContents = [Xml](Get-Content "$nuspecFile")
     $releaseNotes = $nuspecContents.package.metadata.SelectSingleNode("releaseNotes")
     if($releaseNotes -eq $null)
@@ -81,6 +84,10 @@ task SetReleaseNotes -depends Test {
 
     $ignore = $releaseNotes.InnerText = $releaseNotes
     $nuspecContents.Save("$nuspecFile")
+  }
+  else
+  {
+    Write-Host "No release notes found."
   }
 }
 
