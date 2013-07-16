@@ -69,10 +69,10 @@ task Test -depends Compile {
 task SetReleaseNotes -depends Test {
   $releaseNotes = $Env:ReleaseNotes
 
-  if(![string]::IsNullOrEmpty($releaseNotes))
+  if(![string]::IsNullOrEmpty($Env:ReleaseNotes))
   {
     Write-Host "Setting release notes to:"
-    Write-Host "$releaseNotes"
+    Write-Host "$Env:ReleaseNotes"
 
     $nuspecContents = [Xml](Get-Content "$nuspecFile")
     $releaseNotes = $nuspecContents.package.metadata.SelectSingleNode("releaseNotes")
@@ -82,7 +82,7 @@ task SetReleaseNotes -depends Test {
       $nuspecContents.package.metadata.AppendChild($releaseNotes)
     }
 
-    $ignore = $releaseNotes.InnerText = $releaseNotes
+    $ignore = $releaseNotes.InnerText = $Env:ReleaseNotes
     $nuspecContents.Save("$nuspecFile")
   }
   else
