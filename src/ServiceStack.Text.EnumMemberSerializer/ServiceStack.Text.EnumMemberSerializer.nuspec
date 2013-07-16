@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package>
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
@@ -11,7 +11,7 @@
     <iconUrl>http://www.servicestack.net/logo-100x100.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <copyright>Copyright © Anthony Carl, Chatham Financial Corp. 2013</copyright>
+    <copyright>Copyright Anthony Carl, Chatham Financial Corp. 2013</copyright>
     <tags>Serializer TEXT PrettyPrint ServiceStack JSON Service</tags>
   </metadata>
 </package>

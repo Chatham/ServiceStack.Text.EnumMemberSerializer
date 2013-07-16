@@ -34,6 +34,7 @@ properties {
     $unitTestNamePart = "UnitTests"
     $testDll = "$srcRoot\$projectBaseName.$unitTestNamePart\bin\$configuration\$projectBaseName.$unitTestNamePart.dll"
     $slnFile = "$srcRoot\$projectBaseName.sln"
+    $nuspecFile ="$srcRoot\$projectBaseName\$projectBaseName.nuspec"
     $framework = "4.0"
     $xunitRunner = ".\tools\xunit.runners.1.9.1\tools\xunit.console.clr4.exe"
     $nugetOutputDir = ".\ReleasePackages"
@@ -65,7 +66,25 @@ task Test -depends Compile {
   exec { .$xunitRunner "$testDll" }
 }
 
-task Pack -depends Test {
+task SetReleaseNotes -depends Test {
+  $releaseNotes = $Env:ReleaseNotes
+
+  if(![string]::IsNullOrEmpty($releaseNotes))
+  {
+    $nuspecContents = [Xml](Get-Content "$nuspecFile")
+    $releaseNotes = $nuspecContents.package.metadata.SelectSingleNode("releaseNotes")
+    if($releaseNotes -eq $null)
+    {
+      $releaseNotes = $nuspecContents.CreateElement('releaseNotes')
+      $nuspecContents.package.metadata.AppendChild($releaseNotes)
+    }
+
+    $ignore = $releaseNotes.InnerText = $releaseNotes
+    $nuspecContents.Save("$nuspecFile")
+  }
+}
+
+task Pack -depends SetReleaseNotes {
   mkdir -p "$nugetOutputDir" -force
 
   $completeVersionNumber = Get-VersionNumber
