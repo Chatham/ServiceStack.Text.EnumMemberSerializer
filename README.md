@@ -102,6 +102,7 @@ Without ServiceStack.Text.EnumMemberSerializer:
 * Multiple calls to `.WithEnumTypes()` and `.WithNamespaceFilter()` will be added and not replace previous specified values.
 * This manipulates the static `JsConfig<T>`. Other code called later may overwrite the custom serialization/deserialization delegates.
 * Both `.WithEnumTypes()` and `.WithAssemblies()` may be used at the same time, the results will be combined.
+* `Configure()` should be called before serializing/deserializing anything with `ServiceStack.Text` or the custom methods may not be setup correctly in `JsConfig`
 
 #Using the Code
 
