@@ -67,10 +67,11 @@
     <Compile Include="EnumSerializerHelpersTests.cs" />
     <Compile Include="FakeTestingEnum.cs" />
     <Compile Include="FieldInfoExtensionsTests.cs" />
-    <Compile Include="JsConfigLock.cs" />
+    <Compile Include="StaticTestingLocks.cs" />
     <Compile Include="NonPublicEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EnumTypeExtensions.cs" />
+    <Compile Include="WhereTheEnumHasNoNamespace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -11,7 +11,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void Configure_TestAssembly_JsConfigFuncsSet()
         {
             //Inspecting static values, so locking in cases tests are multi threaded.
-            lock (JsConfigLock.LockObject)
+            lock (StaticTestingLocks.JsConfigLockObject)
             {
                 JsConfig<FakeTestingEnum>.Reset();
 
@@ -30,7 +30,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         }
 
         [Fact]
-        public void Configure_TestAssembly_BothEnumsConfigured()
+        public void Configure_TestAssembly_AllEnumsConfigured()
         {
             var proxyFake = new EnumSerializerHelpersProxyFake();
 
@@ -38,7 +38,8 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 .WithAssemblies(new[] {Assembly.GetExecutingAssembly()})
                 .Configure();
 
-            Assert.Equal(2, proxyFake.ConfigedTypes.Count);
+            Assert.Equal(3, proxyFake.ConfigedTypes.Count);
+            Assert.True(proxyFake.ConfigedTypes.Contains(typeof (WhereTheEnumHasNoNamespace)));
             Assert.True(proxyFake.ConfigedTypes.Contains(typeof (FakeTestingEnum)));
             Assert.True(proxyFake.ConfigedTypes.Contains(typeof (DifferentNamespaceEnum)));
         }

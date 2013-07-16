@@ -10,12 +10,13 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
     public class AssemblyExtenstionsTests
     {
         [Fact]
-        public void GetPublicEnums_UnitTestClassNoFilter_ReturnsBothEnums()
+        public void GetPublicEnums_UnitTestClassNoFilter_ReturnsAllEnums()
         {
             var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly()};
             var publicEnums = assemblies.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
 
-            Assert.Equal(2, publicEnums.Count);
+            Assert.Equal(3, publicEnums.Count);
+            Assert.True(publicEnums.Contains(typeof (WhereTheEnumHasNoNamespace)));
             Assert.True(publicEnums.Contains(typeof (FakeTestingEnum)));
             Assert.True(publicEnums.Contains(typeof (DifferentNamespaceEnum)));
         }
@@ -31,14 +32,15 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         }
 
         [Fact]
-        public void GetPublicEnums_DuplicateAssemblyInList_ReturnsBothDistinctEnums()
+        public void GetPublicEnums_DuplicateAssemblyInList_ReturnsAllDistinctEnums()
         {
             var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly(), Assembly.GetExecutingAssembly()};
             var publicEnums = assemblies.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
 
-            Assert.Equal(2, publicEnums.Count);
-            Assert.True(publicEnums.Contains(typeof(FakeTestingEnum)));
-            Assert.True(publicEnums.Contains(typeof(DifferentNamespaceEnum)));
+            Assert.Equal(3, publicEnums.Count);
+            Assert.True(publicEnums.Contains(typeof (WhereTheEnumHasNoNamespace)));
+            Assert.True(publicEnums.Contains(typeof (FakeTestingEnum)));
+            Assert.True(publicEnums.Contains(typeof (DifferentNamespaceEnum)));
         }
 
         [Fact]
@@ -58,12 +60,13 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         }
 
         [Fact]
-        public void GetPublicEnums_UnitTestClassNullFilter_ReturnsBothEnums()
+        public void GetPublicEnums_UnitTestClassNullFilter_ReturnsAllEnums()
         {
             var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly()};
             var publicEnums = assemblies.GetPublicEnums(null);
 
-            Assert.Equal(2, publicEnums.Count);
+            Assert.Equal(3, publicEnums.Count);
+            Assert.True(publicEnums.Contains(typeof (WhereTheEnumHasNoNamespace)));
             Assert.True(publicEnums.Contains(typeof (FakeTestingEnum)));
             Assert.True(publicEnums.Contains(typeof (DifferentNamespaceEnum)));
         }
@@ -94,6 +97,18 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 () =>
                 {
                     assemblies.GetPublicEnums(s => { throw new NotImplementedException(); });
+                });
+        }
+
+        [Fact]
+        public void GetPublicEnums_CheckNoNullStrings_NullNamespaceEnumIsNotNullString()
+        {
+            var assemblies = new List<Assembly> { Assembly.GetExecutingAssembly() };
+            assemblies.GetPublicEnums(
+                s =>
+                {
+                    Assert.NotNull(s);
+                    return true;
                 });
         }
     }

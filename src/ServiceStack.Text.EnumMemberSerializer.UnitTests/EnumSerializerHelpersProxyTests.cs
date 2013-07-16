@@ -9,7 +9,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void ConfigEnumSerializers_EnumType_JsConfigFuncsSet()
         {
             //Inspecting static values, so locking in cases tests are multi threaded.
-            lock (JsConfigLock.LockObject)
+            lock (StaticTestingLocks.JsConfigLockObject)
             {
                 JsConfig<FakeTestingEnum>.Reset();
 
