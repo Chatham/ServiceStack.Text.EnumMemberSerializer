@@ -29,7 +29,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
                 }
                 var assemblyPublicEnums =
                     (from publicEnumType in assembly.GetTypes().GetPublicEnums()
-                     where enumNamespaceFilter(publicEnumType.Namespace)
+                     where enumNamespaceFilter(publicEnumType.Namespace ?? string.Empty)
                      select publicEnumType
                     ).ToList();
                 enumTypes.AddRange(assemblyPublicEnums);
