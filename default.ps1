@@ -42,6 +42,7 @@ properties {
     $versionFile = ".\MajorMinorVersion.txt"
     $majorMinorVersion = Get-Content $versionFile
     $completeVersionNumber = Get-VersionNumber
+    $gitHubRepoUrl = "https://github.com/Chatham/ServiceStack.Text.EnumMemberSerializer"
     $versionSwitch = ""
     
     if(!$completeVersionNumber.EndsWith(".*"))
@@ -67,27 +68,38 @@ task Test -depends Compile {
 }
 
 task SetReleaseNotes -depends Test {
-  $releaseNotes = $Env:ReleaseNotes
+  $releaseNotesText = $Env:ReleaseNotes
+  $vcsNumber = $Env:BUILD_VCS_NUMBER
 
-  if(![string]::IsNullOrEmpty($Env:ReleaseNotes))
+  if(![string]::IsNullOrEmpty($vcsNumber))
+  {
+    Write-Host "Found VCS number: $vcsNumber"
+    $releaseNotesText += "Includes changes up to and including: $gitHubRepoUrl/commit/$vcsNumber" + [System.Environment]::NewLine
+  }
+  else
+  {
+    Write-Host "No VCS number found."
+  }
+
+  if(![string]::IsNullOrEmpty($releaseNotesText))
   {
     Write-Host "Setting release notes to:"
-    Write-Host "$Env:ReleaseNotes"
+    Write-Host "$releaseNotesText"
 
     $nuspecContents = [Xml](Get-Content "$nuspecFile")
-    $releaseNotes = $nuspecContents.package.metadata.SelectSingleNode("releaseNotes")
-    if($releaseNotes -eq $null)
+    $releaseNotesNode = $nuspecContents.package.metadata.SelectSingleNode("releaseNotes")
+    if($releaseNotesNode -eq $null)
     {
-      $releaseNotes = $nuspecContents.CreateElement('releaseNotes')
-      $nuspecContents.package.metadata.AppendChild($releaseNotes)
+      $releaseNotesNode = $nuspecContents.CreateElement('releaseNotes')
+      $nuspecContents.package.metadata.AppendChild($releaseNotesText)
     }
 
-    $ignore = $releaseNotes.InnerText = $Env:ReleaseNotes
+    $ignore = $releaseNotesNode.InnerText = $releaseNotesText
     $nuspecContents.Save("$nuspecFile")
   }
   else
   {
-    Write-Host "No release notes found."
+    Write-Host "No release notes added."
   }
 }
 
