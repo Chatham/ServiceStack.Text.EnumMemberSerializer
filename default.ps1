@@ -91,7 +91,7 @@ task SetReleaseNotes -depends Test {
     if($releaseNotesNode -eq $null)
     {
       $releaseNotesNode = $nuspecContents.CreateElement('releaseNotes')
-      $nuspecContents.package.metadata.AppendChild($releaseNotesText)
+      $ignore = $nuspecContents.package.metadata.AppendChild($releaseNotesNode)
     }
 
     $ignore = $releaseNotesNode.InnerText = $releaseNotesText
