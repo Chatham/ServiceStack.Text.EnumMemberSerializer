@@ -14,13 +14,13 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 JsConfig<FakeTestingEnum>.Reset();
 
                 //Testing static class is fun
-                var proxy = new EnumSerializerHelpersProxy();
+                var proxy = new EnumSerializerInitializerProxy();
                 proxy.ConfigEnumSerializers(typeof (FakeTestingEnum));
                 //new EnumSerializerHelpers<FakeTestingEnum>();
                 Func<FakeTestingEnum, string> expectedSerializeFunc =
-                    EnumSerializerHelpers<FakeTestingEnum>.SerializeEnum;
+                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalDescription;
                 Func<string, FakeTestingEnum> expectedDeserializeFunc =
-                    EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum;
+                    PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom;
 
                 Assert.Equal(expectedSerializeFunc, JsConfig<FakeTestingEnum>.SerializeFn);
                 Assert.Equal(expectedDeserializeFunc, JsConfig<FakeTestingEnum>.DeSerializeFn);

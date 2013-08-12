@@ -13,20 +13,19 @@ namespace ServiceStack.Text.EnumMemberSerializer
         private readonly HashSet<Type> _enumTypes = new HashSet<Type>();
         private Func<string, bool> _enumNamespaceFilter = AlwaysTrueFilter;
 
-        private IEnumSerializerHelpersProxy _jsConfigManager;
+        private IEnumSerializerInitializerProxy _jsConfigManager;
 
         internal static Func<string, bool> AlwaysTrueFilter
         {
             get { return s => true; }
         }
 
-        internal IEnumSerializerHelpersProxy JsConfigProxy
+        internal IEnumSerializerInitializerProxy JsConfigProxy
         {
-            get { return _jsConfigManager ?? (_jsConfigManager = new EnumSerializerHelpersProxy()); }
+            get { return _jsConfigManager ?? (_jsConfigManager = new EnumSerializerInitializerProxy()); }
             set { _jsConfigManager = value; }
         }
         
-
         /// <summary>
         ///     Only configure enumerations that match the provided namespace filter.
         ///     This filter applies to the types found in the provided assembly list.

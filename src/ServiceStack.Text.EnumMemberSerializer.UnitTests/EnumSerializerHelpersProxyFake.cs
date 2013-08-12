@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
-    public class EnumSerializerHelpersProxyFake : IEnumSerializerHelpersProxy
+    public class EnumSerializerHelpersProxyFake : IEnumSerializerInitializerProxy
     {
         public List<Type> ConfigedTypes = new List<Type>();
 

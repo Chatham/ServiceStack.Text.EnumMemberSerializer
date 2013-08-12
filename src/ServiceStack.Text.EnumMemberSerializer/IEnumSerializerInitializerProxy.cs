@@ -2,7 +2,7 @@
 
 namespace ServiceStack.Text.EnumMemberSerializer
 {
-    internal interface IEnumSerializerHelpersProxy
+    internal interface IEnumSerializerInitializerProxy
     {
         void ConfigEnumSerializers(Type type);
     }

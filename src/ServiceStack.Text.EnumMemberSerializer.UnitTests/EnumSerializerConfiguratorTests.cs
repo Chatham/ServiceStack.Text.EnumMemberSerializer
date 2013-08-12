@@ -20,9 +20,9 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                     .Configure();
 
                 Func<FakeTestingEnum, string> expectedSerializeFunc =
-                    EnumSerializerHelpers<FakeTestingEnum>.SerializeEnum;
+                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalDescription;
                 Func<string, FakeTestingEnum> expectedDeserializeFunc =
-                    EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum;
+                    PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom;
 
                 Assert.Equal(expectedSerializeFunc, JsConfig<FakeTestingEnum>.SerializeFn);
                 Assert.Equal(expectedDeserializeFunc, JsConfig<FakeTestingEnum>.DeSerializeFn);

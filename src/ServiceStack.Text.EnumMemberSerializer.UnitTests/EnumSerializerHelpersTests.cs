@@ -18,8 +18,8 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var cache = new ConcurrentDictionary<string, FakeTestingEnum>();
 
             FakeTestingEnum yourvalueEnum =
-                EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum(YourvalueInt.ToString(), cache);
-            FakeTestingEnum myvalueEnum = EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum(
+                PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum(YourvalueInt.ToString(), cache);
+            FakeTestingEnum myvalueEnum = PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum(
                 MyValueInt.ToString(), cache);
 
             Assert.Equal(FakeTestingEnum.YourValue, yourvalueEnum);
@@ -34,18 +34,18 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             lock (StaticTestingLocks.DeserializeCacheLockObject)
             {
-                EnumSerializerHelpers<FakeTestingEnum>.DeserializeCache =
+                PrettyEnumHelpers<FakeTestingEnum>.DeserializeCache =
                     new ConcurrentDictionary<string, FakeTestingEnum>();
 
                 const int YourvalueInt = 123;
 
                 FakeTestingEnum yourvalueEnum =
-                    EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum(YourvalueInt.ToString());
+                    PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom(YourvalueInt.ToString());
 
                 Assert.Equal(FakeTestingEnum.YourValue, yourvalueEnum);
-                Assert.Equal(1, EnumSerializerHelpers<FakeTestingEnum>.DeserializeCache.Count);
+                Assert.Equal(1, PrettyEnumHelpers<FakeTestingEnum>.DeserializeCache.Count);
                 Assert.True(
-                    EnumSerializerHelpers<FakeTestingEnum>.DeserializeCache.ContainsKey(YourvalueInt.ToString()));
+                    PrettyEnumHelpers<FakeTestingEnum>.DeserializeCache.ContainsKey(YourvalueInt.ToString()));
             }
         }
 
@@ -53,7 +53,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void DeserializeEnum_WithCacheAndNullString_DefaultEnumAndNothingAddedToCache()
         {
             var cache = new ConcurrentDictionary<string, FakeTestingEnum>();
-            FakeTestingEnum deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum(null, cache);
+            FakeTestingEnum deserializedEnum = PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum(null, cache);
 
             Assert.Equal(default(FakeTestingEnum), deserializedEnum);
             Assert.Equal(0, cache.Count);
@@ -63,7 +63,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void DeserializeEnum_WithCacheAndEmptyString_DefaultEnumAndAddedToCache()
         {
             var cache = new ConcurrentDictionary<string, FakeTestingEnum>();
-            FakeTestingEnum deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum(
+            FakeTestingEnum deserializedEnum = PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum(
                 string.Empty, cache);
 
             Assert.Equal(default(FakeTestingEnum), deserializedEnum);
@@ -77,7 +77,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             const string Whitespace = "  \r  \t  ";
 
             var cache = new ConcurrentDictionary<string, FakeTestingEnum>();
-            FakeTestingEnum deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum(Whitespace, cache);
+            FakeTestingEnum deserializedEnum = PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum(Whitespace, cache);
 
             Assert.Equal(default(FakeTestingEnum), deserializedEnum);
             Assert.Equal(1, cache.Count);
@@ -87,15 +87,14 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         [Fact]
         public void GetEnumFromDescription_FromInt_ReturnsCorrectEnum()
         {
-            FakeTestingEnum deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription("123");
+            FakeTestingEnum deserializedEnum = PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum("123");
             Assert.Equal(FakeTestingEnum.YourValue, deserializedEnum);
         }
 
         [Fact]
         public void GetEnumFromDescription_FromEnumName_ResturnsCorrectEnum()
         {
-            FakeTestingEnum deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription(
-                "YourValue");
+            FakeTestingEnum deserializedEnum = PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum("YourValue");
             Assert.Equal(FakeTestingEnum.YourValue, deserializedEnum);
         }
 
@@ -103,14 +102,14 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void GetEnumFromDescription_InvalidEnumString_ReturnsDefaultEnum()
         {
             FakeTestingEnum deserializedEnum =
-                EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription("Invalid Value");
+                PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum("Invalid Value");
             Assert.Equal(default(FakeTestingEnum), deserializedEnum);
         }
 
         [Fact]
         public void GetEnumFromDescription_FromEnumNameMixedCase_ResturnsCorrectEnum()
         {
-            FakeTestingEnum deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription(
+            FakeTestingEnum deserializedEnum = PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum(
                 "YoURvaLuE");
             Assert.Equal(FakeTestingEnum.YourValue, deserializedEnum);
         }
@@ -119,7 +118,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void GetEnumFromDescription_WhitespacePaddedEnum_ResturnsCorrectEnum()
         {
             FakeTestingEnum deserializedEnum =
-                EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription("\tYourValue  ");
+                PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum("\tYourValue  ");
             Assert.Equal(FakeTestingEnum.YourValue, deserializedEnum);
         }
 
@@ -127,7 +126,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void GetEnumFromDescription_FromEnumMemberAttributeName_ReturnsCorrectEnum()
         {
             FakeTestingEnum deserializedEnum =
-                EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription(YourValueEnumMemberValue);
+                PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum(YourValueEnumMemberValue);
             Assert.Equal(FakeTestingEnum.YourValue, deserializedEnum);
         }
 
@@ -135,7 +134,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void GetEnumFromDescription_WhiteSpacePaddedEnumMemberAttrName_ReturnsCorrectEnum()
         {
             FakeTestingEnum deserializedEnum =
-                EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription("\t" + YourValueEnumMemberValue + "  ");
+                PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum("\t" + YourValueEnumMemberValue + "  ");
             Assert.Equal(FakeTestingEnum.YourValue, deserializedEnum);
         }
 
@@ -144,14 +143,14 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             Assert.Throws<InvalidOperationException>(
                 () =>
-                EnumSerializerHelpers<DateTime>.GetEnumFromDescription("yup"));
+                PrettyEnumHelpers<DateTime>.DeserializeEnum("yup"));
         }
 
         [Fact]
         public void GetEnumFromDescription_InvalidStringValue_ReturnsDefaultEnumValue()
         {
             FakeTestingEnum deserializedEnum =
-                EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription("not valid description");
+                PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum("not valid description");
             Assert.Equal(default(FakeTestingEnum), deserializedEnum);
         }
 
@@ -159,14 +158,14 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void GetEnumFromDescription_EmptyStringValue_ReturnsDefaultEnumValue()
         {
             FakeTestingEnum deserializedEnum =
-                EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription(string.Empty);
+                PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum(string.Empty);
             Assert.Equal(default(FakeTestingEnum), deserializedEnum);
         }
 
         [Fact]
         public void GetEnumFromDescription_NullStringValue_ReturnsDefaultEnumValue()
         {
-            FakeTestingEnum deserializedEnum = EnumSerializerHelpers<FakeTestingEnum>.GetEnumFromDescription(null);
+            FakeTestingEnum deserializedEnum = PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum(null);
             Assert.Equal(default(FakeTestingEnum), deserializedEnum);
         }
 
@@ -174,7 +173,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void SerializeEnum_WithCacheAndValidDescription_CorrectEnumAddedToCache()
         {
             var cache = new ConcurrentDictionary<FakeTestingEnum, string>();
-            string serializedEnum = EnumSerializerHelpers<FakeTestingEnum>.SerializeEnum(
+            string serializedEnum = PrettyEnumHelpers<FakeTestingEnum>.SerializeEnum(
                 FakeTestingEnum.YourValue, cache);
 
             Assert.Equal(YourValueEnumMemberValue, serializedEnum);
@@ -187,14 +186,14 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             lock (StaticTestingLocks.SerializeCacheLockObject)
             {
-                EnumSerializerHelpers<FakeTestingEnum>.SerializeCache =
+                PrettyEnumHelpers<FakeTestingEnum>.SerializeCache =
                     new ConcurrentDictionary<FakeTestingEnum, string>();
-                string serializedEnum = EnumSerializerHelpers<FakeTestingEnum>.SerializeEnum(FakeTestingEnum.YourValue);
+                string serializedEnum = PrettyEnumHelpers<FakeTestingEnum>.GetOptimalDescription(FakeTestingEnum.YourValue);
 
                 Assert.Equal(YourValueEnumMemberValue, serializedEnum);
-                Assert.Equal(1, EnumSerializerHelpers<FakeTestingEnum>.SerializeCache.Count);
+                Assert.Equal(1, PrettyEnumHelpers<FakeTestingEnum>.SerializeCache.Count);
                 Assert.True(
-                    EnumSerializerHelpers<FakeTestingEnum>.SerializeCache.ContainsKey(FakeTestingEnum.YourValue));
+                    PrettyEnumHelpers<FakeTestingEnum>.SerializeCache.ContainsKey(FakeTestingEnum.YourValue));
             }
         }
 
@@ -203,13 +202,13 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             Assert.Throws<InvalidOperationException>(
                 () =>
-                EnumSerializerHelpers<DateTime>.GetDescriptionFromEnum(new DateTime()));
+                PrettyEnumHelpers<DateTime>.SerializeEnum(new DateTime()));
         }
 
         [Fact]
         public void GetDescriptionFromEnum_ValidEnumTypeWithAttr_ReturnsAttrString()
         {
-            string enumString = EnumSerializerHelpers<FakeTestingEnum>.GetDescriptionFromEnum(FakeTestingEnum.YourValue);
+            string enumString = PrettyEnumHelpers<FakeTestingEnum>.SerializeEnum(FakeTestingEnum.YourValue);
             Assert.Equal(YourValueEnumMemberValue, enumString);
         }
 
@@ -225,7 +224,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 
             for (int i = 0; i < testIterations; i++)
             {
-                string value = EnumSerializerHelpers<FakeTestingEnum>.SerializeEnum(FakeTestingEnum.YourValue, cache);
+                string value = PrettyEnumHelpers<FakeTestingEnum>.SerializeEnum(FakeTestingEnum.YourValue, cache);
             }
 
             swSerEnumMember.Stop();
@@ -255,7 +254,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 
             for (int i = 0; i < testIterations; i++)
             {
-                FakeTestingEnum value = EnumSerializerHelpers<FakeTestingEnum>.DeserializeEnum("YourValue", cache);
+                FakeTestingEnum value = PrettyEnumHelpers<FakeTestingEnum>.DeserializeEnum("YourValue", cache);
             }
 
             swDeserializeEnumMember.Stop();
@@ -275,7 +274,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         [Fact]
         public void GetDescriptionFromEnum_ValidEnumTypeWithoutAttr_ReturnsEnumString()
         {
-            string enumString = EnumSerializerHelpers<FakeTestingEnum>.GetDescriptionFromEnum(FakeTestingEnum.MyValue);
+            string enumString = PrettyEnumHelpers<FakeTestingEnum>.SerializeEnum(FakeTestingEnum.MyValue);
             Assert.Equal("MyValue", enumString);
         }
 
@@ -283,14 +282,14 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         public void GetDescriptionFromEnum_InValidEnumValue_ReturnsIntValueAsString()
         {
             string enumString =
-                EnumSerializerHelpers<FakeTestingEnum>.GetDescriptionFromEnum((FakeTestingEnum) int.MaxValue);
+                PrettyEnumHelpers<FakeTestingEnum>.SerializeEnum((FakeTestingEnum)int.MaxValue);
             Assert.Equal(int.MaxValue.ToString(), enumString);
         }
 
         [Fact]
         public void Constructor_NonEnumStruct_ThrowsException()
         {
-            Assert.Throws<ArgumentException>(() => new EnumSerializerHelpers<DateTime>());
+            Assert.Throws<ArgumentException>(() => new EnumSerializerInitializer<DateTime>());
         }
     }
 }
