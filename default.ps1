@@ -74,7 +74,7 @@ task SetReleaseNotes -depends Test {
   if(![string]::IsNullOrEmpty($vcsNumber))
   {
     Write-Host "Found VCS number: $vcsNumber"
-    $releaseNotesText += "Includes changes up to and including: $gitHubRepoUrl/commit/$vcsNumber" + [System.Environment]::NewLine
+    $releaseNotesText += [System.Environment]::NewLine + [System.Environment]::NewLine + "Includes changes up to and including: $gitHubRepoUrl/commit/$vcsNumber" + [System.Environment]::NewLine
   }
   else
   {
