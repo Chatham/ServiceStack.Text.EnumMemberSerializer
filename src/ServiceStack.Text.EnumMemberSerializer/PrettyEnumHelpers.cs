@@ -5,24 +5,14 @@ using System.Runtime.Serialization;
 
 namespace ServiceStack.Text.EnumMemberSerializer
 {
-    /// <summary>
-    ///     Serialize/Deserialize enumerations using EnumMember Attribute Value if present.
-    /// </summary>
-    /// <typeparam name="TEnum">The type must be an enumeration.</typeparam>
-    public static class PrettyEnumHelpers<TEnum> where TEnum : struct
+    internal static class PrettyEnumHelpers<TEnum> where TEnum : struct 
     {
         //These have to be separate since multiple string values can deserialize to the same enum
         //i.e. "1", "MyEnum", "My Enum" can all resolve to the same enum value.
         internal static ConcurrentDictionary<TEnum, string> SerializeCache = new ConcurrentDictionary<TEnum, string>();
         internal static ConcurrentDictionary<string, TEnum> DeserializeCache = new ConcurrentDictionary<string, TEnum>();
 
-        /// <summary>
-        ///     Gets the optimal string representation of an enumeration.
-        /// </summary>
-        /// <param name="enumValue"></param>
-        /// <returns>Returns EnumMember Value if present, otherwise returns enumValue.ToString().</returns>
-        /// <exception cref="InvalidOperationException">The provided object is not an enumeration.</exception>
-        public static string GetOptimalDescription(TEnum enumValue)
+        public static string GetOptimalEnumDescription(TEnum enumValue) 
         {
             return SerializeEnum(enumValue, SerializeCache);
         }
@@ -64,11 +54,6 @@ namespace ServiceStack.Text.EnumMemberSerializer
             return attributes.IsEmpty() ? null : (EnumMemberAttribute) attributes[0];
         }
 
-        /// <summary>
-        ///     Gets the enumeration for the given string representation.
-        /// </summary>
-        /// <param name="enumValue">The pretty value, enumeration string value, or integer value of the enumeration.</param>
-        /// <exception cref="InvalidOperationException">The type parameter is not an Enumeration.</exception>
         public static TEnum GetEnumFrom(string enumValue)
         {
             return DeserializeEnum(enumValue, DeserializeCache);

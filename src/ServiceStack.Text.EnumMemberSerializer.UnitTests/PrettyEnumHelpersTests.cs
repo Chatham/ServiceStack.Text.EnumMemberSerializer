@@ -5,7 +5,7 @@ using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
-    public class EnumSerializerHelpersTests
+    public class PrettyEnumHelpersTests
     {
         private const string YourValueEnumMemberValue = "Your Value is worse";
 
@@ -188,7 +188,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             {
                 PrettyEnumHelpers<FakeTestingEnum>.SerializeCache =
                     new ConcurrentDictionary<FakeTestingEnum, string>();
-                string serializedEnum = PrettyEnumHelpers<FakeTestingEnum>.GetOptimalDescription(FakeTestingEnum.YourValue);
+                string serializedEnum = PrettyEnumHelpers<FakeTestingEnum>.GetOptimalEnumDescription(FakeTestingEnum.YourValue);
 
                 Assert.Equal(YourValueEnumMemberValue, serializedEnum);
                 Assert.Equal(1, PrettyEnumHelpers<FakeTestingEnum>.SerializeCache.Count);

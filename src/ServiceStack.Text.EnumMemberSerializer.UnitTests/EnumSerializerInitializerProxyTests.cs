@@ -3,7 +3,7 @@ using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
-    public class EnumSerializerHelpersProxyTests
+    public class EnumSerializerInitializerProxyTests
     {
         [Fact]
         public void ConfigEnumSerializers_EnumType_JsConfigFuncsSet()
@@ -18,7 +18,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 proxy.ConfigEnumSerializers(typeof (FakeTestingEnum));
                 //new EnumSerializerHelpers<FakeTestingEnum>();
                 Func<FakeTestingEnum, string> expectedSerializeFunc =
-                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalDescription;
+                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalEnumDescription;
                 Func<string, FakeTestingEnum> expectedDeserializeFunc =
                     PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom;
 

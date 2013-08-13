@@ -20,7 +20,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                     .Configure();
 
                 Func<FakeTestingEnum, string> expectedSerializeFunc =
-                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalDescription;
+                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalEnumDescription;
                 Func<string, FakeTestingEnum> expectedDeserializeFunc =
                     PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom;
 
@@ -32,7 +32,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         [Fact]
         public void Configure_TestAssembly_AllEnumsConfigured()
         {
-            var proxyFake = new EnumSerializerHelpersProxyFake();
+            var proxyFake = new EnumSerializerInitializerProxyFake();
 
             new EnumSerializerConfigurator {JsConfigProxy = proxyFake}
                 .WithAssemblies(new[] {Assembly.GetExecutingAssembly()})
@@ -47,7 +47,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         [Fact]
         public void Configure_TestEnumsAddedIndividually_BothEnumsConfigured()
         {
-            var proxyFake = new EnumSerializerHelpersProxyFake();
+            var proxyFake = new EnumSerializerInitializerProxyFake();
 
             new EnumSerializerConfigurator { JsConfigProxy = proxyFake }
                 .WithEnumTypes(new Type[]{null})
@@ -63,7 +63,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         [Fact]
         public void Configure_TestEnumsAddedTogether_BothEnumsConfigured()
         {
-            var proxyFake = new EnumSerializerHelpersProxyFake();
+            var proxyFake = new EnumSerializerInitializerProxyFake();
 
             new EnumSerializerConfigurator { JsConfigProxy = proxyFake }
                 .WithEnumTypes(new Type[] { null })
@@ -78,7 +78,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         [Fact]
         public void Configure_NamespaceExcludedEnumAddedExplicitly_AllEnumsConfigured()
         {
-            var proxyFake = new EnumSerializerHelpersProxyFake();
+            var proxyFake = new EnumSerializerInitializerProxyFake();
 
             new EnumSerializerConfigurator {JsConfigProxy = proxyFake}
                 .WithEnumTypes(new[] {typeof (DateTimeKind)})
@@ -96,7 +96,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         [Fact]
         public void Configure_NamespaceFilteredAndExplicitEnum_BothEnumsConfigured()
         {
-            var proxyFake = new EnumSerializerHelpersProxyFake();
+            var proxyFake = new EnumSerializerInitializerProxyFake();
 
             new EnumSerializerConfigurator { JsConfigProxy = proxyFake }
                 .WithEnumTypes(new[] { typeof(DateTimeKind) })
@@ -112,7 +112,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         [Fact]
         public void Configure_FilterSpecifiedNoAssembly_OnlyExplicitEnumsConfigured()
         {
-            var proxyFake = new EnumSerializerHelpersProxyFake();
+            var proxyFake = new EnumSerializerInitializerProxyFake();
 
             new EnumSerializerConfigurator { JsConfigProxy = proxyFake }
                 .WithEnumTypes(new[] { typeof(DateTimeKind) })

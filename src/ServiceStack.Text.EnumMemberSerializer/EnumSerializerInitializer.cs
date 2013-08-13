@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Collections.Concurrent;
 
 namespace ServiceStack.Text.EnumMemberSerializer
 {
-    internal class EnumSerializerInitializer<T> where T : struct
+    internal class EnumSerializerInitializer<TEnum> where TEnum : struct
     {
+        internal static ConcurrentDictionary<TEnum, string> SerializeCache = new ConcurrentDictionary<TEnum, string>();
+        internal static ConcurrentDictionary<string, TEnum> DeserializeCache = new ConcurrentDictionary<string, TEnum>();
+
         public EnumSerializerInitializer()
         {
-            if (!typeof (T).IsEnum)
+            if (!typeof (TEnum).IsEnum)
             {
                 throw new ArgumentException("Type parameter must be an enum.");
             }
 
-            JsConfig<T>.Reset();
-            JsConfig<T>.SerializeFn = PrettyEnumHelpers<T>.GetOptimalDescription;
-            JsConfig<T>.DeSerializeFn = PrettyEnumHelpers<T>.GetEnumFrom;
+            JsConfig<TEnum>.Reset();
+            JsConfig<TEnum>.SerializeFn = PrettyEnumHelpers<TEnum>.GetOptimalEnumDescription;
+            JsConfig<TEnum>.DeSerializeFn = PrettyEnumHelpers<TEnum>.GetEnumFrom;
         }
     }
 }

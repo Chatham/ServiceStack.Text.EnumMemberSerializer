@@ -62,11 +62,12 @@
     <Compile Include="DifferentNamespaceEnum.cs" />
     <Compile Include="EnumMemberAttributeExtensionsTests.cs" />
     <Compile Include="EnumSerializerConfiguratorTests.cs" />
-    <Compile Include="EnumSerializerHelpersProxyFake.cs" />
-    <Compile Include="EnumSerializerHelpersProxyTests.cs" />
-    <Compile Include="EnumSerializerHelpersTests.cs" />
+    <Compile Include="EnumSerializerInitializerProxyFake.cs" />
+    <Compile Include="EnumSerializerInitializerProxyTests.cs" />
+    <Compile Include="PrettyEnumHelpersTests.cs" />
     <Compile Include="FakeTestingEnum.cs" />
     <Compile Include="FieldInfoExtensionsTests.cs" />
+    <Compile Include="PrettyEnumExtensionsTests.cs" />
     <Compile Include="StaticTestingLocks.cs" />
     <Compile Include="NonPublicEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

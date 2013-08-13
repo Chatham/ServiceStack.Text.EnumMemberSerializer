@@ -45,6 +45,7 @@
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="EnumMemberAttributeExtensions.cs" />
     <Compile Include="EnumSerializerConfigurator.cs" />
+    <Compile Include="PrettyEnumExtensions.cs" />
     <Compile Include="PrettyEnumHelpers.cs" />
     <Compile Include="EnumSerializerInitializerProxy.cs" />
     <Compile Include="EnumSerializerInitializer.cs" />
