@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace ServiceStack.Text.EnumMemberSerializer
 {
@@ -89,10 +91,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
                 _enumTypes.Add(assemblyPublicEnum);
             }
 
-            foreach (Type enumType in _enumTypes)
-            {
-                JsConfigProxy.ConfigEnumSerializers(enumType);
-            }
+            Parallel.ForEach(_enumTypes, JsConfigProxy.ConfigEnumSerializers);
         }
     }
 }
