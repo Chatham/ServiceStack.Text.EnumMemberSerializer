@@ -103,6 +103,7 @@ Without ServiceStack.Text.EnumMemberSerializer:
 * This manipulates the static `JsConfig<T>`. Other code called later may overwrite the custom serialization/deserialization delegates.
 * Both `.WithEnumTypes()` and `.WithAssemblies()` may be used at the same time, the results will be combined.
 * `Configure()` should be called before serializing/deserializing anything with `ServiceStack.Text` or the custom methods may not be setup correctly in `JsConfig`
+* Serializer does not currently work with nullable Enums. Consider having a `NotSet = 0` enumeration.
 
 #Using the Code
 
