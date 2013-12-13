@@ -104,6 +104,7 @@ Without ServiceStack.Text.EnumMemberSerializer:
 * Both `.WithEnumTypes()` and `.WithAssemblies()` may be used at the same time, the results will be combined.
 * `Configure()` should be called before serializing/deserializing anything with `ServiceStack.Text` or the custom methods may not be setup correctly in `JsConfig`
 * Serializer does not currently work with nullable Enums. Consider having a `NotSet = 0` enumeration.
+* Unit Tests pass using ServiceStack v4.
 
 #Using the Code
 
