@@ -5,7 +5,7 @@ Extension for [`ServiceStack.Text`](https://github.com/ServiceStack/ServiceStack
 
 Custom enumeration serialization currently only applies to the json serializer. It works by assigning custom delegates to [`JsConfig<T>.SerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs) and [`JsConfig<T>.DeSerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs). 
 
-To maintain compatibiility with previous versions of this library and avoid breaking changes, serilaizers for nullable enums are not configured by default. To configure nullable enum serialization, use the `WithNullableEnumSerializers()` method on the `EnumMemberConfigurator`.
+To maintain compatibility with previous versions of this library and avoid breaking changes, serilaizers for nullable enums are not configured by default. To configure nullable enum serialization, use the `WithNullableEnumSerializers()` method on the `EnumMemberConfigurator`.
 
 #Example Configuration
 
