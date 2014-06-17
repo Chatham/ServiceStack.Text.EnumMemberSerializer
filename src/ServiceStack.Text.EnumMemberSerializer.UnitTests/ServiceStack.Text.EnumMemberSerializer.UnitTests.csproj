@@ -64,6 +64,7 @@
     <Compile Include="EnumSerializerConfiguratorTests.cs" />
     <Compile Include="EnumSerializerInitializerProxyFake.cs" />
     <Compile Include="EnumSerializerInitializerProxyTests.cs" />
+    <Compile Include="EnumSerializerInitializerTests.cs" />
     <Compile Include="PrettyEnumHelpersTests.cs" />
     <Compile Include="FakeTestingEnum.cs" />
     <Compile Include="FieldInfoExtensionsTests.cs" />

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using SomeOtherNamespace;
 using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     public class EnumSerializerConfiguratorTests
     {
         [Fact]
@@ -26,6 +28,37 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 
                 Assert.Equal(expectedSerializeFunc, JsConfig<FakeTestingEnum>.SerializeFn);
                 Assert.Equal(expectedDeserializeFunc, JsConfig<FakeTestingEnum>.DeSerializeFn);
+            }
+        }
+
+        [Fact]
+        public void Configure_TestAssemblyConfigNullableEnum_JsConfigFuncsSet()
+        {
+            //Inspecting static values, so locking in cases tests are multi threaded.
+            lock (StaticTestingLocks.JsConfigLockObject)
+            {
+                JsConfig<FakeTestingEnum>.Reset();
+                JsConfig<FakeTestingEnum?>.Reset();
+
+                new EnumSerializerConfigurator()
+                    .WithAssemblies(new[] { Assembly.GetExecutingAssembly() })
+                    .WithNullableEnumSerializers()
+                    .Configure();
+
+                Func<FakeTestingEnum, string> expectedSerializeFunc =
+                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalEnumDescription;
+                Func<string, FakeTestingEnum> expectedDeserializeFunc =
+                    PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom;
+
+                Func<FakeTestingEnum?, string> expectedNullableSerializeFunc =
+                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalEnumDescription;
+                Func<string, FakeTestingEnum?> expectedNullableDeserializeFunc =
+                    PrettyEnumHelpers<FakeTestingEnum>.GetNullableEnumFrom;
+
+                Assert.Equal(expectedSerializeFunc, JsConfig<FakeTestingEnum>.SerializeFn);
+                Assert.Equal(expectedDeserializeFunc, JsConfig<FakeTestingEnum>.DeSerializeFn);
+                Assert.Equal(expectedNullableSerializeFunc, JsConfig<FakeTestingEnum?>.SerializeFn);
+                Assert.Equal(expectedNullableDeserializeFunc, JsConfig<FakeTestingEnum?>.DeSerializeFn);
             }
         }
 

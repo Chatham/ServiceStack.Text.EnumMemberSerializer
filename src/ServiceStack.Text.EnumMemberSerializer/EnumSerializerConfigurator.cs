@@ -11,8 +11,9 @@ namespace ServiceStack.Text.EnumMemberSerializer
     {
         private readonly HashSet<Assembly> _assembliesToScan = new HashSet<Assembly>();
         private readonly HashSet<Type> _enumTypes = new HashSet<Type>();
+        private readonly object _lockObject = new object();
+        private bool _configureNullableEnumSerilalizers;
         private Func<string, bool> _enumNamespaceFilter = AlwaysTrueFilter;
-
         private IEnumSerializerInitializerProxy _jsConfigManager;
 
         internal static Func<string, bool> AlwaysTrueFilter
@@ -25,7 +26,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
             get { return _jsConfigManager ?? (_jsConfigManager = new EnumSerializerInitializerProxy()); }
             set { _jsConfigManager = value; }
         }
-        
+
         /// <summary>
         ///     Only configure enumerations that match the provided namespace filter.
         ///     This filter applies to the types found in the provided assembly list.
@@ -78,20 +79,39 @@ namespace ServiceStack.Text.EnumMemberSerializer
         }
 
         /// <summary>
+        ///     This will configure the nullable enumeration as well as the non-nullable enumeration (recommended).
+        /// </summary>
+        public IEnumSerializerConfigurator WithNullableEnumSerializers()
+        {
+            _configureNullableEnumSerilalizers = true;
+            return this;
+        }
+
+        /// <summary>
         ///     Configures ServiceStack JsConfig with the custom enumeration serializers.
         /// </summary>
         public void Configure()
         {
-            var assemblyPublicEnums = _assembliesToScan.GetPublicEnums(_enumNamespaceFilter);
-
-            foreach (var assemblyPublicEnum in assemblyPublicEnums)
+            lock (_lockObject)
             {
-                _enumTypes.Add(assemblyPublicEnum);
-            }
+                var assemblyPublicEnums = _assembliesToScan.GetPublicEnums(_enumNamespaceFilter);
 
-            foreach (Type enumType in _enumTypes)
-            {
-                JsConfigProxy.ConfigEnumSerializers(enumType);
+                foreach (var assemblyPublicEnum in assemblyPublicEnums)
+                {
+                    _enumTypes.Add(assemblyPublicEnum);
+                }
+
+                foreach (var enumType in _enumTypes)
+                {
+                    if (_configureNullableEnumSerilalizers)
+                    {
+                        JsConfigProxy.ConfigEnumAndNullableEnumSerializers(enumType);
+                    }
+                    else
+                    {
+                        JsConfigProxy.ConfigEnumSerializers(enumType);
+                    }
+                }
             }
         }
     }

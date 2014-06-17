@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     public class EnumSerializerInitializerProxyTests
     {
         [Fact]
@@ -16,7 +18,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 //Testing static class is fun
                 var proxy = new EnumSerializerInitializerProxy();
                 proxy.ConfigEnumSerializers(typeof (FakeTestingEnum));
-                //new EnumSerializerHelpers<FakeTestingEnum>();
+
                 Func<FakeTestingEnum, string> expectedSerializeFunc =
                     PrettyEnumHelpers<FakeTestingEnum>.GetOptimalEnumDescription;
                 Func<string, FakeTestingEnum> expectedDeserializeFunc =

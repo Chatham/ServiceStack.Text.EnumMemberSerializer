@@ -1,9 +1,11 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Rhino.Mocks;
 using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     public class FieldInfoExtensionsTests
     {
         private const string MyFieldName = "MyFieldsName";

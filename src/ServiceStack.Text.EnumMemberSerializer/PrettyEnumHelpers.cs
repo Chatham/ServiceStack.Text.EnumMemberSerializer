@@ -17,6 +17,11 @@ namespace ServiceStack.Text.EnumMemberSerializer
             return SerializeEnum(enumValue, SerializeCache);
         }
 
+        public static string GetOptimalEnumDescription(TEnum? enumValue)
+        {
+            return enumValue.HasValue ? SerializeEnum(enumValue.Value, SerializeCache) : null;
+        }
+
         internal static string SerializeEnum(TEnum enumValue, ConcurrentDictionary<TEnum, string> cache)
         {
             return cache.GetOrAdd(enumValue, SerializeEnum);
@@ -59,9 +64,19 @@ namespace ServiceStack.Text.EnumMemberSerializer
             return DeserializeEnum(enumValue, DeserializeCache);
         }
 
+        public static TEnum? GetNullableEnumFrom(string enumValue)
+        {
+            return DeserializeNullableEnum(enumValue, DeserializeCache);
+        }
+
         internal static TEnum DeserializeEnum(string enumValue, ConcurrentDictionary<string, TEnum> cache)
         {
             return enumValue == null ? default(TEnum) : cache.GetOrAdd(enumValue, DeserializeEnum);
+        }
+
+        internal static TEnum? DeserializeNullableEnum(string enumValue, ConcurrentDictionary<string, TEnum> cache)
+        {
+            return enumValue == null ? default(TEnum?) : cache.GetOrAdd(enumValue, DeserializeEnum);
         }
 
         internal static TEnum DeserializeEnum(string enumValue)

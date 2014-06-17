@@ -5,3 +5,5 @@
 /ReleasePackages
 /src/TestResults
 /src/*.suo
+/ssTextv4Test
+/src/*.user

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     public class PrettyEnumHelpersTests
     {
         private const string YourValueEnumMemberValue = "Your Value is worse";
@@ -268,7 +270,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             }
 
             swDeserializeStringTo.Stop();
-            Assert.True(swDeserializeEnumMember.ElapsedTicks <= swDeserializeStringTo.ElapsedTicks);
+           Assert.True(swDeserializeEnumMember.ElapsedTicks <= swDeserializeStringTo.ElapsedTicks);
         }
 
         [Fact]
@@ -286,10 +288,6 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             Assert.Equal(int.MaxValue.ToString(), enumString);
         }
 
-        [Fact]
-        public void Constructor_NonEnumStruct_ThrowsException()
-        {
-            Assert.Throws<ArgumentException>(() => new EnumSerializerInitializer<DateTime>());
-        }
+
     }
 }
