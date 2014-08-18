@@ -75,6 +75,19 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         }
 
         [Fact]
+        public void GetEnum_PrettyDescriptionWithCommas_ReturnsEnum()
+        {
+            lock (StaticTestingLocks.DeserializeCacheLockObject)
+            {
+                PrettyEnumHelpers<FakeTestingEnum>.DeserializeCache =
+                    new ConcurrentDictionary<string, FakeTestingEnum>();
+                const string prettyDescription = "Commas, Problems";
+                var actualEnum = prettyDescription.GetEnum<FakeTestingEnum>();
+                Assert.Equal(FakeTestingEnum.CommasProblems, actualEnum);
+            }
+        }
+
+        [Fact]
         public void GetEnum_InvalidDescription_ReturnsDefaultEnum()
         {
             lock (StaticTestingLocks.DeserializeCacheLockObject)

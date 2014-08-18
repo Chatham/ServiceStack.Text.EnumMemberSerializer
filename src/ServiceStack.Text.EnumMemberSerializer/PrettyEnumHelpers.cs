@@ -86,14 +86,15 @@ namespace ServiceStack.Text.EnumMemberSerializer
                 throw new InvalidOperationException();
             }
 
-            TEnum enumObject = Enum.TryParse(enumValue, true, out enumObject)
-                                   ? enumObject
-                                   : GetValueFromDescription(enumValue);
+            TEnum enumObject;
+            if (TryGetValueFromDescription(enumValue, out enumObject))
+                return enumObject;
 
+            Enum.TryParse(enumValue, true, out enumObject);
             return enumObject;
         }
 
-        private static TEnum GetValueFromDescription(string description)
+        private static bool TryGetValueFromDescription(string description, out TEnum enumObject)
         {
             Type type = typeof (TEnum);
 
@@ -104,11 +105,12 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
                 if (attribute.MatchesDescription(description) || field.MatchesDescription(description))
                 {
-                    return (TEnum) field.GetValue(null);
+                    enumObject = (TEnum)field.GetValue(null);
+                    return true;
                 }
             }
-
-            return default(TEnum);
+            enumObject = default(TEnum);
+            return false;
         }
     }
 }
