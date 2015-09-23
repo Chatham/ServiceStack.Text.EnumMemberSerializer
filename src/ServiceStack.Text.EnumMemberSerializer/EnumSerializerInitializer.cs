@@ -6,17 +6,17 @@ namespace ServiceStack.Text.EnumMemberSerializer
     {
         public EnumSerializerInitializer()
         {
-            if (!typeof(TEnum).IsEnum)
+            if (!typeof (TEnum).IsEnum)
             {
                 throw new ArgumentException("Type parameter must be an enum.");
             }
         }
 
-        public void InitializeEnumSerializer() 
+        public void InitializeEnumSerializer()
         {
             JsConfig<TEnum>.Reset();
             JsConfig<TEnum>.SerializeFn = PrettyEnumHelpers<TEnum>.GetOptimalEnumDescription;
-            JsConfig<TEnum>.DeSerializeFn = PrettyEnumHelpers<TEnum>.GetEnumFrom;
+            JsConfigWrapper<TEnum>.SetDeserializerMember(PrettyEnumHelpers<TEnum>.GetEnumFrom);
         }
 
         public void InitializeEnumAndNullableEnumSerializer()
@@ -26,7 +26,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
             //or the text is null or empty.
             JsConfig<TEnum?>.Reset();
             JsConfig<TEnum?>.SerializeFn = PrettyEnumHelpers<TEnum>.GetOptimalEnumDescription;
-            JsConfig<TEnum?>.DeSerializeFn = PrettyEnumHelpers<TEnum>.GetNullableEnumFrom;
+            JsConfigWrapper<TEnum?>.SetDeserializerMember(PrettyEnumHelpers<TEnum>.GetNullableEnumFrom);
         }
     }
 }

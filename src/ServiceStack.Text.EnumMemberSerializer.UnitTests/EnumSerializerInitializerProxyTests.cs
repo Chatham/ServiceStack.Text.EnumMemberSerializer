@@ -24,8 +24,8 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 Func<string, FakeTestingEnum> expectedDeserializeFunc =
                     PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom;
 
-                Assert.Equal(expectedSerializeFunc, JsConfig<FakeTestingEnum>.SerializeFn);
-                Assert.Equal(expectedDeserializeFunc, JsConfig<FakeTestingEnum>.DeSerializeFn);
+                Assert.Equal(expectedSerializeFunc.Target, JsConfig<FakeTestingEnum>.SerializeFn.Target);
+                Assert.Equal(expectedDeserializeFunc.Target, JsConfigFnTargetResolver<FakeTestingEnum>.GetDeserializerTarget());
             }
         }
     }

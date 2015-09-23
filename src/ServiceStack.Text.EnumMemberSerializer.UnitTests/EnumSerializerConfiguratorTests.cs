@@ -27,7 +27,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                     PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom;
 
                 Assert.Equal(expectedSerializeFunc, JsConfig<FakeTestingEnum>.SerializeFn);
-                Assert.Equal(expectedDeserializeFunc, JsConfig<FakeTestingEnum>.DeSerializeFn);
+                Assert.Equal(expectedDeserializeFunc.Target, JsConfigFnTargetResolver<FakeTestingEnum>.GetDeserializerTarget());
             }
         }
 
@@ -56,9 +56,9 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                     PrettyEnumHelpers<FakeTestingEnum>.GetNullableEnumFrom;
 
                 Assert.Equal(expectedSerializeFunc, JsConfig<FakeTestingEnum>.SerializeFn);
-                Assert.Equal(expectedDeserializeFunc, JsConfig<FakeTestingEnum>.DeSerializeFn);
+                Assert.Equal(expectedDeserializeFunc.Target, JsConfigFnTargetResolver<FakeTestingEnum>.GetDeserializerTarget());
                 Assert.Equal(expectedNullableSerializeFunc, JsConfig<FakeTestingEnum?>.SerializeFn);
-                Assert.Equal(expectedNullableDeserializeFunc, JsConfig<FakeTestingEnum?>.DeSerializeFn);
+                Assert.Equal(expectedNullableDeserializeFunc.Target, JsConfigFnTargetResolver<FakeTestingEnum?>.GetDeserializerTarget());
             }
         }
 
