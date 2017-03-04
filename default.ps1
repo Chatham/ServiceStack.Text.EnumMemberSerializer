@@ -2,7 +2,7 @@ if((Get-Module | Where-Object {$_.Name -eq "psake"}) -eq $null)
     { 
         Write-Host "psake module not found, importing it" 
         $scriptPath = Split-Path $MyInvocation.InvocationName 
-        Import-Module .\tools\psake.4.2.0.1\tools\psake.psm1
+        Import-Module .\tools\psake.4.6.0\tools\psake.psm1
     } 
 Import-Module .\tools\SetVersion.psm1
 
@@ -41,7 +41,7 @@ properties {
     $slnFile = "$srcRoot\$projectBaseName.sln"
     $nuspecFile ="$srcRoot\$projectBaseName\$projectBaseName.nuspec"
     $framework = "4.0"
-    $xunitRunner = ".\tools\xunit.runners.1.9.1\tools\xunit.console.clr4.exe"
+    $xunitRunner = ".\tools\xunit.runners.console.2.2.0\tools\xunit.console.clr4.exe"
     $nugetOutputDir = ".\ReleasePackages"
     $nugetExe = "$rootLocation\tools\nuget\nuget.exe"
     $versionFile = ".\MajorMinorVersion.txt"
