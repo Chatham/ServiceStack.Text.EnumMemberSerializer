@@ -1,1 +1,1 @@
-tools\psake.4.6.0\tools\psake.cmd %*
+powershell .\build.ps1
