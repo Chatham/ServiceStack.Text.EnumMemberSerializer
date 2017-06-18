@@ -1,13 +1,13 @@
 ServiceStack.Text.EnumMemberSerializer
 ======================================
 
-Extension for [`ServiceStack.Text`](https://github.com/ServiceStack/ServiceStack.Text) to allow using [`EnumMemberAttribute`](http://msdn.microsoft.com/en-us/library/system.runtime.serialization.enummemberattribute.aspx) to serialize and deserialize enumerations. This allows you to use more human readable values while still leveraging the benefits of using enumerations.
+Extension for [`ServiceStack.Text`](https://github.com/ServiceStack/ServiceStack.Text) (including `ServiceStack.Text.Core`) to allow using [`EnumMemberAttribute`](http://msdn.microsoft.com/en-us/library/system.runtime.serialization.enummemberattribute.aspx) to serialize and deserialize enumerations. This allows you to use more human readable values while still leveraging the benefits of using enumerations.
 
 Custom enumeration serialization currently only applies to the json serializer. It works by assigning custom delegates to [`JsConfig<T>.SerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs) and [`JsConfig<T>.DeSerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs). 
 
 To maintain compatibility with previous versions of this library and avoid breaking changes, serilaizers for nullable enums are not configured by default. To configure nullable enum serialization, use the `WithNullableEnumSerializers()` method on the `EnumMemberConfigurator`.
 
-#Example Configuration
+# Example Configuration
 
 Configure explicit enumerations:
 ```c#
@@ -26,7 +26,7 @@ new EnumSerializerConfigurator()
   .Configure();
 ```
 
-#Example Enumeration
+# Example Enumeration
 ```c#
 using System.Runtime.Serialization;
 
@@ -48,7 +48,7 @@ namespace ExampleCode
 }
 ```
 
-#Example Dto
+# Example Dto
 ```c#
 namespace ExampleCode
 {
@@ -61,7 +61,7 @@ namespace ExampleCode
 }
 ```
 
-#Url Examples
+# Url Examples
 
 These will search for all product returnable within 90 days with receipt (all of these will work):
 ```
@@ -71,7 +71,7 @@ http://myhost/products?returnpolicy=_90DayswReceipt
 http://myhost/products?returnpolicy=1
 ```
 
-#Example Response
+# Example Response
 
 With ServiceStack.Text.EnumMemberSerializer:
 ```JSON
@@ -100,7 +100,7 @@ Without ServiceStack.Text.EnumMemberSerializer:
    }
 ]
 ```
-#Considerations
+# Considerations
 * Only configures public enumerations.
 * `.WithNamespaceFilter()` only applies to filtering public enums found in the assemblies passed in using `.WithAssemblies()`. Any enumerations explicitly identified `.WithEnumTypes()` will not be filtered by namespace. The namespace filter applies to all provided assemblies.
 * Multiple calls to `.WithEnumTypes()` and `.WithNamespaceFilter()` will be added and not replace previous specified values.
@@ -109,11 +109,12 @@ Without ServiceStack.Text.EnumMemberSerializer:
 * `Configure()` should be called before serializing/deserializing anything with `ServiceStack.Text` or the custom methods may not be setup correctly in `JsConfig`
 * Unit Tests pass using ServiceStack v4.
 
-#Using the Code
+# Using the Code
 
 * [Install the NuGet Package](https://nuget.org/packages/ServiceStack.Text.EnumMemberSerializer/)
 * You can check out the code and run build.bat.
   * It will create NuGet packages you can consume in `.\ReleasePackages` or you can directly use the resulting binaries. 
 * Build requirements
-  * .Net 4.0
-  * Powershell 2.0
+  * .Net Framework 4.6
+  * .Net Core
+  * Powershell
