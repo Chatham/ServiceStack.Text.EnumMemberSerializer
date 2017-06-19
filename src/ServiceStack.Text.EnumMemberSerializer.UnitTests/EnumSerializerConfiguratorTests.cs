@@ -14,33 +14,10 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             lock (StaticTestingLocks.JsConfigLockObject)
             {
                 JsConfig<FakeTestingEnum>.Reset();
-
-                new EnumSerializerConfigurator()
-                    .WithAssemblies(new[] {typeof(FakeTestingEnum).GetTypeInfo().Assembly})
-                    .Configure();
-
-                Func<FakeTestingEnum, string> expectedSerializeFunc =
-                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalEnumDescription;
-                Func<string, FakeTestingEnum> expectedDeserializeFunc =
-                    PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom;
-
-                Assert.Equal(expectedSerializeFunc, JsConfig<FakeTestingEnum>.SerializeFn);
-                Assert.Equal(expectedDeserializeFunc.Target, JsConfigFnTargetResolver<FakeTestingEnum>.GetDeserializerTarget());
-            }
-        }
-
-        [Fact]
-        public void Configure_TestAssemblyConfigNullableEnum_JsConfigFuncsSet()
-        {
-            //Inspecting static values, so locking in cases tests are multi threaded.
-            lock (StaticTestingLocks.JsConfigLockObject)
-            {
-                JsConfig<FakeTestingEnum>.Reset();
                 JsConfig<FakeTestingEnum?>.Reset();
 
                 new EnumSerializerConfigurator()
                     .WithAssemblies(new[] {typeof(FakeTestingEnum).GetTypeInfo().Assembly})
-                    .WithNullableEnumSerializers()
                     .Configure();
 
                 Func<FakeTestingEnum, string> expectedSerializeFunc =

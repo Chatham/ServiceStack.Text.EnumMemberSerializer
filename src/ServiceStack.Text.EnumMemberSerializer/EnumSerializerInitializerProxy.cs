@@ -11,11 +11,6 @@ namespace ServiceStack.Text.EnumMemberSerializer
             ExecuteConfigureMethod(nameof(EnumSerializerInitializer<int>.InitializeEnumSerializer), type);
         }
 
-        public void ConfigEnumAndNullableEnumSerializers(Type type)
-        {
-            ExecuteConfigureMethod(nameof(EnumSerializerInitializer<int>.InitializeEnumAndNullableEnumSerializer), type);
-        }
-
         private static void ExecuteConfigureMethod(string methodName, Type type)
         {
             var genericType = typeof(EnumSerializerInitializer<>).MakeGenericType(type);

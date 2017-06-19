@@ -29,6 +29,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
         /// <summary>
         /// This will configure the nullable enumeration as well as the non-nullable enumeration (recommended).
         /// </summary>
+        [Obsolete("Nullable enumerations are always configured.")]
         IEnumSerializerConfigurator WithNullableEnumSerializers();
 
         /// <summary>

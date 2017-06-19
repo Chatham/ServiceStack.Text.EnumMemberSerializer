@@ -15,15 +15,5 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             }
             ConfigedTypes.Add(type);
         }
-
-        public void ConfigEnumAndNullableEnumSerializers(Type type)
-        {
-            if (type == null)
-            {
-                throw new ArgumentNullException("type");
-            }
-
-            ConfigedTypes.Add(type);
-        }
     }
 }

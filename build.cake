@@ -4,7 +4,7 @@
 var target = Argument("target", "Default");
 var buildConfiguration = Argument("configuration", "Release");
 var majorMinorVersion = "2.0";
-var baseDate = new DateTime(2017,06,18,0,0,0,0,DateTimeKind.Utc);
+var baseDate = new DateTime(2017,06,19,0,0,0,0,DateTimeKind.Utc);
 var elapsedSinceBaseDate = DateTime.UtcNow - baseDate;
 var days = (int)elapsedSinceBaseDate.TotalDays;
 var revision = (int)(elapsedSinceBaseDate.Subtract(TimeSpan.FromDays(days)).TotalSeconds / 1.5);
@@ -45,7 +45,8 @@ Task("Build")
 {
   var buildSettings = new DotNetCoreBuildSettings
      {
-         Configuration = buildConfiguration
+         Configuration = buildConfiguration,
+         NoIncremental = true
      };
 
   DotNetCoreBuild("./src/ServiceStack.Text.EnumMemberSerializer.sln", buildSettings);
@@ -62,7 +63,7 @@ Task("Test")
       new DotNetCoreTestSettings
       {
         Configuration = buildConfiguration,
-        NoBuild = true
+        //NoBuild = true
       });
     },
     new FilePath("./dotcover/dotcover.html"),
