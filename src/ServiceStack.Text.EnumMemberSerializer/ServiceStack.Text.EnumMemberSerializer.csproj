@@ -5,7 +5,7 @@
     <Authors>Chatham Financial Corp.</Authors>
     <Copyright>Copyright 2017 Chatham Financial Corp.</Copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <Version>2.0.0.6205</Version>
+    <Version>2.0.0.7151</Version>
     <PackageProjectUrl>https://github.com/Chatham/ServiceStack.Text.EnumMemberSerializer</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/Chatham/ServiceStack.Text.EnumMemberSerializer/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/Chatham/ServiceStack.Text.EnumMemberSerializer</RepositoryUrl>

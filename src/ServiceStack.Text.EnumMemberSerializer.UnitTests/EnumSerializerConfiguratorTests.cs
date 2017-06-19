@@ -18,6 +18,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 
                 new EnumSerializerConfigurator()
                     .WithAssemblies(new[] {typeof(FakeTestingEnum).GetTypeInfo().Assembly})
+                    .WithNullableEnumSerializers()
                     .Configure();
 
                 Func<FakeTestingEnum, string> expectedSerializeFunc =

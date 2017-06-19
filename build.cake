@@ -56,30 +56,6 @@ Task("Test")
   .IsDependentOn("Build")
   .Does(() =>
 {
-/*
-  DotCoverAnalyse(ctx => {
-    ctx.DotNetCoreTest(
-      "./src/ServiceStack.Text.EnumMemberSerializer.UnitTests/ServiceStack.Text.EnumMemberSerializer.UnitTests.csproj",
-      new DotNetCoreTestSettings
-      {
-        Configuration = buildConfiguration,
-        //NoBuild = true
-      });
-    },
-    new FilePath("./dotcover/dotcover.html"),
-    new DotCoverAnalyseSettings()
-      {
-        ReportType = DotCoverReportType.HTML
-      }
-      .WithFilter("-:*Tests")
-  );
-*/
-/*
-  CopyDirectory("./src/ServiceStack.Text.EnumMemberSerializer.UnitTests/bin/" + buildConfiguration +"/net452", "./SsV4Test");
-  DeleteFile("./SsV4Test/ServiceStack.Text.dll");
-  CopyFile("./ServiceStack.Text.4/lib/net40/ServiceStack.Text.dll", "./SsV4Test/ServiceStack.Text.dll");
-*/
-
   Action<ICakeContext, string> runTests = (ctx, framework) => { 
     ctx.DotNetCoreTest("./src/ServiceStack.Text.EnumMemberSerializer.UnitTests/ServiceStack.Text.EnumMemberSerializer.UnitTests.csproj", new DotNetCoreTestSettings 
         {
@@ -143,7 +119,9 @@ Task("Pack")
   var packSettings = new DotNetCorePackSettings
      {
          Configuration = buildConfiguration,
-         OutputDirectory = "./ReleasePackages/"
+         OutputDirectory = "./ReleasePackages/",
+         ArgumentCustomization = args => args.Append("--include-symbols")
+                                             .Append("--include-source")
      };
   DotNetCorePack("./src/ServiceStack.Text.EnumMemberSerializer/ServiceStack.Text.EnumMemberSerializer.csproj", packSettings);
 });
