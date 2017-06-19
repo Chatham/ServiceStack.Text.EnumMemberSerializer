@@ -5,7 +5,7 @@ Extension for [`ServiceStack.Text`](https://github.com/ServiceStack/ServiceStack
 
 Custom enumeration serialization currently only applies to the json serializer. It works by assigning custom delegates to [`JsConfig<T>.SerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs) and [`JsConfig<T>.DeSerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs). 
 
-To maintain compatibility with previous versions of this library and avoid breaking changes, serilaizers for nullable enums are not configured by default. To configure nullable enum serialization, use the `WithNullableEnumSerializers()` method on the `EnumMemberConfigurator`.
+Nullable enumerations are now always configured. `WithNullableEnumSerializers()` method on the `EnumMemberConfigurator` remains with an `[Obsolete]` attribute to minimize disruption when upgrading.
 
 # Example Configuration
 
@@ -13,7 +13,6 @@ Configure explicit enumerations:
 ```c#
 new EnumSerializerConfigurator()
   .WithEnumTypes(new Type[] { typeof(ReturnPolicy) })
-  .WithNullableEnumSerializers() //Optional if you want support for ReturnPolicy? 
   .Configure();
 ```
 
@@ -22,7 +21,6 @@ Configure all enumerations in the ExampleCode namespace for all assemblies in my
 new EnumSerializerConfigurator()
   .WithAssemblies(AppDomain.CurrentDomain.GetAssemblies())
   .WithNamespaceFilter(ns => ns.StartsWith("ExampleCode"))
-  .WithNullableEnumSerializers() //Optional if you want support for nullable enums
   .Configure();
 ```
 
