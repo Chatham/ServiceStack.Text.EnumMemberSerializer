@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 
@@ -29,15 +30,15 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
         internal static string SerializeEnum(TEnum enumValue)
         {
-            if (!typeof (TEnum).IsEnum)
+            if (!typeof (TEnum).GetTypeInfo().IsEnum)
             {
                 throw new InvalidOperationException();
             }
 
-            EnumMemberAttribute attribute = GetEnumMemberAttribute(enumValue);
-            string attributeValue = attribute == null ? string.Empty : attribute.Value;
+            var attribute = GetEnumMemberAttribute(enumValue);
+            var attributeValue = attribute == null ? string.Empty : attribute.Value;
 
-            string stringValue = string.IsNullOrWhiteSpace(attributeValue)
+            var stringValue = string.IsNullOrWhiteSpace(attributeValue)
                                      ? enumValue.ToString()
                                      : attributeValue;
 
@@ -46,17 +47,9 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
         private static EnumMemberAttribute GetEnumMemberAttribute(object enumVal)
         {
-            Type type = enumVal.GetType();
-            MemberInfo[] memberInfo = type.GetMember(enumVal.ToString());
-
-            if (memberInfo.Length == 0)
-            {
-                return null;
-            }
-
-            object[] attributes = memberInfo[0].GetCustomAttributes(typeof (EnumMemberAttribute), false);
-
-            return attributes.IsEmpty() ? null : (EnumMemberAttribute) attributes[0];
+            var memberInfo =
+                enumVal.GetType().GetTypeInfo().DeclaredMembers.FirstOrDefault(x => x.Name == enumVal.ToString());
+            return memberInfo?.GetCustomAttribute<EnumMemberAttribute>(false);
         }
 
         public static TEnum GetEnumFrom(string enumValue)
@@ -81,13 +74,12 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
         internal static TEnum DeserializeEnum(string enumValue)
         {
-            if (!typeof (TEnum).IsEnum)
+            if (!typeof (TEnum).GetTypeInfo().IsEnum)
             {
                 throw new InvalidOperationException();
             }
 
-            TEnum enumObject;
-            if (TryGetValueFromDescription(enumValue, out enumObject))
+            if (TryGetValueFromDescription(enumValue, out TEnum enumObject))
                 return enumObject;
 
             Enum.TryParse(enumValue, true, out enumObject);
@@ -96,12 +88,11 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
         private static bool TryGetValueFromDescription(string description, out TEnum enumObject)
         {
-            Type type = typeof (TEnum);
+            var type = typeof (TEnum);
 
-            foreach (FieldInfo field in type.GetFields())
+            foreach (var field in type.GetTypeInfo().DeclaredFields)
             {
-                var attribute =
-                    Attribute.GetCustomAttribute(field, typeof (EnumMemberAttribute)) as EnumMemberAttribute;
+                var attribute = field.GetCustomAttribute<EnumMemberAttribute>();
 
                 if (attribute.MatchesDescription(description) || field.MatchesDescription(description))
                 {

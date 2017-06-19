@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
-    [ExcludeFromCodeCoverage]
     public class EnumSerializerInitializerProxyTests
     {
         [Fact]

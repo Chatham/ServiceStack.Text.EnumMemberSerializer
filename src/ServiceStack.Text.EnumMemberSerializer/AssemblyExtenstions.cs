@@ -18,23 +18,15 @@ namespace ServiceStack.Text.EnumMemberSerializer
             {
                 enumNamespaceFilter = EnumSerializerConfigurator.AlwaysTrueFilter;
             }
+            
+            var publicEnumtypes =
+                assemblies
+                    .Where(x => x != null)
+                    .SelectMany(x => x.DefinedTypes)
+                    .Where(x => enumNamespaceFilter(x.Namespace ?? ""))
+                    .GetPublicEnums();
 
-            var enumTypes = new List<Type>();
-
-            foreach (var assembly in assemblies)
-            {
-                if (assembly == null)
-                {
-                    continue;
-                }
-                var assemblyPublicEnums =
-                    (from publicEnumType in assembly.GetTypes().GetPublicEnums()
-                     where enumNamespaceFilter(publicEnumType.Namespace ?? string.Empty)
-                     select publicEnumType
-                    ).ToList();
-                enumTypes.AddRange(assemblyPublicEnums);
-            }
-            return new HashSet<Type>(enumTypes);
+            return publicEnumtypes;
         }
     }
 }

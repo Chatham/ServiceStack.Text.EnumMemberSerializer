@@ -7,8 +7,9 @@ namespace ServiceStack.Text.EnumMemberSerializer
     {
         public static bool MatchesDescription(this EnumMemberAttribute attribute, string description)
         {
+            var attributeValue = attribute?.Value;
             return
-                attribute != null
+                attributeValue != null
                 && string.Equals(
                     attribute.Value, (description ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase);
         }

@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
-    [ExcludeFromCodeCoverage]
     public class EnumTypeExtensions
     {
+        [Fact]
+        public void GetPublicEnums_NullTypeInfoList_EmptyEnumList()
+        {
+            List<TypeInfo> nullTypeInfoList = null;
+            var publicEnums = nullTypeInfoList.GetPublicEnums();
+            Assert.Equal(0, publicEnums.Count);
+        }
+
         [Fact]
         public void GetPublicEnums_NullTypeList_EmptyEnumList()
         {

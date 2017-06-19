@@ -4,7 +4,6 @@ using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
-    [ExcludeFromCodeCoverage]
     public class JsConfigWrapperTests
     {
         [Fact]

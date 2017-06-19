@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using SomeOtherNamespace;
 using Xunit;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
-    [ExcludeFromCodeCoverage]
     public class EnumSerializerConfiguratorTests
     {
         [Fact]
@@ -16,33 +14,10 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             lock (StaticTestingLocks.JsConfigLockObject)
             {
                 JsConfig<FakeTestingEnum>.Reset();
-
-                new EnumSerializerConfigurator()
-                    .WithAssemblies(new[] {Assembly.GetExecutingAssembly()})
-                    .Configure();
-
-                Func<FakeTestingEnum, string> expectedSerializeFunc =
-                    PrettyEnumHelpers<FakeTestingEnum>.GetOptimalEnumDescription;
-                Func<string, FakeTestingEnum> expectedDeserializeFunc =
-                    PrettyEnumHelpers<FakeTestingEnum>.GetEnumFrom;
-
-                Assert.Equal(expectedSerializeFunc, JsConfig<FakeTestingEnum>.SerializeFn);
-                Assert.Equal(expectedDeserializeFunc.Target, JsConfigFnTargetResolver<FakeTestingEnum>.GetDeserializerTarget());
-            }
-        }
-
-        [Fact]
-        public void Configure_TestAssemblyConfigNullableEnum_JsConfigFuncsSet()
-        {
-            //Inspecting static values, so locking in cases tests are multi threaded.
-            lock (StaticTestingLocks.JsConfigLockObject)
-            {
-                JsConfig<FakeTestingEnum>.Reset();
                 JsConfig<FakeTestingEnum?>.Reset();
 
                 new EnumSerializerConfigurator()
-                    .WithAssemblies(new[] { Assembly.GetExecutingAssembly() })
-                    .WithNullableEnumSerializers()
+                    .WithAssemblies(new[] {typeof(FakeTestingEnum).GetTypeInfo().Assembly})
                     .Configure();
 
                 Func<FakeTestingEnum, string> expectedSerializeFunc =
@@ -68,7 +43,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var proxyFake = new EnumSerializerInitializerProxyFake();
 
             new EnumSerializerConfigurator {JsConfigProxy = proxyFake}
-                .WithAssemblies(new[] {Assembly.GetExecutingAssembly()})
+                .WithAssemblies(new[] { typeof(WhereTheEnumHasNoNamespace).GetTypeInfo().Assembly})
                 .Configure();
 
             Assert.Equal(3, proxyFake.ConfigedTypes.Count);
@@ -114,9 +89,9 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var proxyFake = new EnumSerializerInitializerProxyFake();
 
             new EnumSerializerConfigurator {JsConfigProxy = proxyFake}
-                .WithEnumTypes(new[] {typeof (DateTimeKind)})
-                .WithEnumTypes(new[] {typeof (FakeTestingEnum)})
-                .WithAssemblies(new[] {Assembly.GetExecutingAssembly()})
+                .WithEnumTypes(new[] {typeof(DateTimeKind)})
+                .WithEnumTypes(new[] {typeof(FakeTestingEnum)})
+                .WithAssemblies(new[] {typeof(FakeTestingEnum).GetTypeInfo().Assembly})
                 .WithNamespaceFilter(ns => ns.StartsWith("SomeOtherNamespace"))
                 .Configure();
 
@@ -131,10 +106,10 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             var proxyFake = new EnumSerializerInitializerProxyFake();
 
-            new EnumSerializerConfigurator { JsConfigProxy = proxyFake }
-                .WithEnumTypes(new[] { typeof(DateTimeKind) })
+            new EnumSerializerConfigurator {JsConfigProxy = proxyFake}
+                .WithEnumTypes(new[] {typeof(DateTimeKind)})
                 .WithNamespaceFilter(ns => ns.StartsWith("SomeOtherNamespace"))
-                .WithAssemblies(new[] { Assembly.GetExecutingAssembly() })
+                .WithAssemblies(new[] {typeof(DifferentNamespaceEnum).GetTypeInfo().Assembly})
                 .Configure();
 
             Assert.Equal(2, proxyFake.ConfigedTypes.Count);

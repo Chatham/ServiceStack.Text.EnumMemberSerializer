@@ -1,70 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<?xml version="1.0" encoding="utf-8"?><Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{79FA7BBB-BC4C-4218-9339-C4885E52D5F2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServiceStack.Text.EnumMemberSerializer</RootNamespace>
-    <AssemblyName>ServiceStack.Text.EnumMemberSerializer</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <Authors>Chatham Financial Corp.</Authors>
+    <Copyright>Copyright 2017 Chatham Financial Corp.</Copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <Version>2.0.0.6205</Version>
+    <PackageProjectUrl>https://github.com/Chatham/ServiceStack.Text.EnumMemberSerializer</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Chatham/ServiceStack.Text.EnumMemberSerializer/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/Chatham/ServiceStack.Text.EnumMemberSerializer</RepositoryUrl>
+    <PackageIconUrl>https://avatars0.githubusercontent.com/u/1318667s=200</PackageIconUrl>
+    <RepositoryType></RepositoryType>
+    <PackageTags>Serializer TEXT PrettyPrint ServiceStack JSON Service ServiceStack.Text JSON Serialize Enum enumeration</PackageTags>
+    <Description>Extension for ServiceStack.Text to allow using EnumMember attributes to serialize and deserialize enumerations.</Description>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\ServiceStack.Text.EnumMemberSerializer.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\ServiceStack.Text.EnumMemberSerializer.XML</DocumentationFile>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\packages\ServiceStack.Text.3.9.44\lib\net35\ServiceStack.Text.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
+    <PackageReference Include="ServiceStack.Text.Core" Version="1.0.1" Condition="'$(TargetFramework)' == 'netstandard1.3'" />
+    <PackageReference Include="ServiceStack.Text" Version="3.9.44" Condition="'$(TargetFramework)' == 'net45'" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AssemblyExtenstions.cs" />
-    <Compile Include="CollectionExtensions.cs" />
-    <Compile Include="EnumSerializerInitializer.cs" />
-    <Compile Include="EnumMemberAttributeExtensions.cs" />
-    <Compile Include="EnumSerializerConfigurator.cs" />
-    <Compile Include="JsConfigWrapper.cs" />
-    <Compile Include="PrettyEnumExtensions.cs" />
-    <Compile Include="PrettyEnumHelpers.cs" />
-    <Compile Include="EnumSerializerInitializerProxy.cs" />
-    <Compile Include="EnumTypeExtensions.cs" />
-    <Compile Include="FieldInfoExtensions.cs" />
-    <Compile Include="IEnumSerializerConfigurator.cs" />
-    <Compile Include="IEnumSerializerInitializerProxy.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

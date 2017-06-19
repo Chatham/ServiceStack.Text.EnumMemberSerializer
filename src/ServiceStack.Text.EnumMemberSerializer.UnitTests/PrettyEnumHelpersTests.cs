@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
-    [ExcludeFromCodeCoverage]
     public class PrettyEnumHelpersTests
     {
         private const string YourValueEnumMemberValue = "Your Value is worse";
+        private readonly ITestOutputHelper _output;
+        
+        public PrettyEnumHelpersTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
 
         [Fact]
         public void DeserializeEnum_WithCache_EnumsAddedToCache()
@@ -214,12 +219,12 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             Assert.Equal(YourValueEnumMemberValue, enumString);
         }
 
-        [Fact(Skip = "Performance Test For Reference")]
+        [Fact()]
         public void SerializeEnum_ValidEnums_HelperMethodFasterThanToString()
         {
             var cache = new ConcurrentDictionary<FakeTestingEnum, string>();
 
-            const int testIterations = 100000;
+            const int testIterations = 1000000;
 
             var swSerEnumMember = new Stopwatch();
             swSerEnumMember.Start();
@@ -241,15 +246,19 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 
             swSerEnumToString.Stop();
 
-            Assert.True(swSerEnumMember.ElapsedTicks <= swSerEnumToString.ElapsedTicks);
+            _output.WriteLine($"Helper: {swSerEnumMember.Elapsed}");
+            _output.WriteLine($"ToString: {swSerEnumToString.Elapsed}");
+            _output.WriteLine($"Ratio: {swSerEnumToString.Elapsed.TotalMilliseconds / swSerEnumMember.Elapsed.TotalMilliseconds}");
+
+            Assert.True(swSerEnumMember.Elapsed <= swSerEnumToString.Elapsed);
         }
 
-        [Fact(Skip = "Performance Test For Reference")]
+        [Fact()]
         public void DeserializeEnum_ValidEnums_HelperMethodFasterThanEnumMethod()
         {
             var cache = new ConcurrentDictionary<string, FakeTestingEnum>();
 
-            const int testIterations = 100000;
+            const int testIterations = 1000000;
 
             var swDeserializeEnumMember = new Stopwatch();
             swDeserializeEnumMember.Start();
@@ -261,16 +270,21 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 
             swDeserializeEnumMember.Stop();
 
-            var swDeserializeStringTo = new Stopwatch();
-            swDeserializeStringTo.Start();
+            var swDeserializeToString = new Stopwatch();
+            swDeserializeToString.Start();
 
             for (int i = 0; i < testIterations; i++)
             {
-                object value = Enum.Parse(typeof (FakeTestingEnum), "YourValue");
+                object value = Enum.Parse(typeof(FakeTestingEnum), "YourValue");
             }
 
-            swDeserializeStringTo.Stop();
-           Assert.True(swDeserializeEnumMember.ElapsedTicks <= swDeserializeStringTo.ElapsedTicks);
+            swDeserializeToString.Stop();
+
+            _output.WriteLine($"Helper: {swDeserializeEnumMember.Elapsed}");
+            _output.WriteLine($"ToString: {swDeserializeToString.Elapsed}");
+            _output.WriteLine($"Ratio: {swDeserializeToString.Elapsed.TotalMilliseconds / swDeserializeEnumMember.Elapsed.TotalMilliseconds}");
+
+            Assert.True(swDeserializeEnumMember.Elapsed <= swDeserializeToString.Elapsed);
         }
 
         [Fact]
@@ -287,7 +301,5 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 PrettyEnumHelpers<FakeTestingEnum>.SerializeEnum((FakeTestingEnum)int.MaxValue);
             Assert.Equal(int.MaxValue.ToString(), enumString);
         }
-
-
     }
 }

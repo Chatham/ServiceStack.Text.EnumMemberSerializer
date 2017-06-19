@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
@@ -11,7 +12,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 
         private static object GetDeserializerTarget(string name)
         {
-            var field = typeof(JsConfig<T>).GetField(name);
+            var field = typeof(JsConfig<T>).GetTypeInfo().GetField(name);
             object value;
             if (field != null)
             {

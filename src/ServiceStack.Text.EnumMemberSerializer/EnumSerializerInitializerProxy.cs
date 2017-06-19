@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace ServiceStack.Text.EnumMemberSerializer
@@ -9,26 +8,14 @@ namespace ServiceStack.Text.EnumMemberSerializer
         //Hide the static class interaction as much as possible
         public void ConfigEnumSerializers(Type type)
         {
-            var mi = GetMethodInfo<EnumSerializerInitializer<int>>(x => x.InitializeEnumSerializer());
-            ExecuteConfigureMethod(mi, type);
+            ExecuteConfigureMethod(nameof(EnumSerializerInitializer<int>.InitializeEnumSerializer), type);
         }
 
-        private static MethodInfo GetMethodInfo<T>(Expression<Action<T>> expression)
+        private static void ExecuteConfigureMethod(string methodName, Type type)
         {
-            return (expression.Body as MethodCallExpression).Method;
-        }
-
-        public void ConfigEnumAndNullableEnumSerializers(Type type)
-        {
-            var mi = GetMethodInfo<EnumSerializerInitializer<int>>(x => x.InitializeEnumAndNullableEnumSerializer());
-            ExecuteConfigureMethod(mi, type);
-        }
-
-        private static void ExecuteConfigureMethod(MethodInfo mi, Type type)
-        {
-            var genericType = typeof(EnumSerializerInitializer<>).MakeGenericType(new[] { type });
-            var genericTypeMyMethodInfo = genericType.GetMethod(mi.Name);
-
+            var genericType = typeof(EnumSerializerInitializer<>).MakeGenericType(type);
+            var genericTypeMyMethodInfo = genericType.GetTypeInfo().GetDeclaredMethod(methodName);
+          
             genericTypeMyMethodInfo.Invoke(Activator.CreateInstance(genericType), null);
         }
     }

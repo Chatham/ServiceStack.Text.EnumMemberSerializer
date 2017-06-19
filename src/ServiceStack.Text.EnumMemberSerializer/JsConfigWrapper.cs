@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace ServiceStack.Text.EnumMemberSerializer
 {
@@ -6,7 +7,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
     {
         public static void SetDeserializerMember(Func<string, T> deserializeFunc)
         {
-            SetDeserializerMemberByName("DeSerializeFn", deserializeFunc);
+            SetDeserializerMemberByName(nameof(JsConfig<object>.DeSerializeFn), deserializeFunc);
         }
         
         public static void SetDeserializerMemberByName(string memberName, Func<string, T> deserializeFunc)
@@ -15,8 +16,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
             if (setDeserializer == null)
             {
-                throw new MemberAccessException(string.Format("Unable to find a field or property member named {0}.",
-                    memberName));
+                throw new MemberAccessException($"Unable to find a field or property member named {memberName}.");
             }
 
             setDeserializer(deserializeFunc);
@@ -24,7 +24,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
         private static Action<Func<string, T>> GetFieldOrNull(string fieldName)
         {
-            var field = typeof(JsConfig<T>).GetField(fieldName);
+            var field = typeof(JsConfig<T>).GetRuntimeField(fieldName);
             if (field == null)
             {
                 return null;
@@ -34,13 +34,13 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
         private static Action<Func<string, T>> GetPropertyOrNull(string propertyName)
         {
-            var property = typeof(JsConfig<T>).GetProperty(propertyName);
+            var property = typeof(JsConfig<T>).GetRuntimeProperty(propertyName);
             if (property == null)
             {
                 return null;
             }
-            return x => property.GetSetMethod().Invoke(null, new object[] { x });
+            return x => property.SetMethod.Invoke(null, new object[] { x });
         }
     }
 
-}
+};

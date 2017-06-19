@@ -12,7 +12,6 @@ namespace ServiceStack.Text.EnumMemberSerializer
         private readonly HashSet<Assembly> _assembliesToScan = new HashSet<Assembly>();
         private readonly HashSet<Type> _enumTypes = new HashSet<Type>();
         private readonly object _lockObject = new object();
-        private bool _configureNullableEnumSerilalizers;
         private Func<string, bool> _enumNamespaceFilter = AlwaysTrueFilter;
         private IEnumSerializerInitializerProxy _jsConfigManager;
 
@@ -81,9 +80,9 @@ namespace ServiceStack.Text.EnumMemberSerializer
         /// <summary>
         ///     This will configure the nullable enumeration as well as the non-nullable enumeration (recommended).
         /// </summary>
+        [Obsolete("Nullable enumerations are always configured.")]
         public IEnumSerializerConfigurator WithNullableEnumSerializers()
         {
-            _configureNullableEnumSerilalizers = true;
             return this;
         }
 
@@ -103,14 +102,7 @@ namespace ServiceStack.Text.EnumMemberSerializer
 
                 foreach (var enumType in _enumTypes)
                 {
-                    if (_configureNullableEnumSerilalizers)
-                    {
-                        JsConfigProxy.ConfigEnumAndNullableEnumSerializers(enumType);
-                    }
-                    else
-                    {
-                        JsConfigProxy.ConfigEnumSerializers(enumType);
-                    }
+                    JsConfigProxy.ConfigEnumSerializers(enumType);
                 }
             }
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace ServiceStack.Text.EnumMemberSerializer
 {
@@ -6,22 +7,17 @@ namespace ServiceStack.Text.EnumMemberSerializer
     {
         public EnumSerializerInitializer()
         {
-            if (!typeof (TEnum).IsEnum)
+            if (!typeof (TEnum).GetTypeInfo().IsEnum)
             {
                 throw new ArgumentException("Type parameter must be an enum.");
             }
         }
-
+        
         public void InitializeEnumSerializer()
         {
             JsConfig<TEnum>.Reset();
             JsConfig<TEnum>.SerializeFn = PrettyEnumHelpers<TEnum>.GetOptimalEnumDescription;
             JsConfigWrapper<TEnum>.SetDeserializerMember(PrettyEnumHelpers<TEnum>.GetEnumFrom);
-        }
-
-        public void InitializeEnumAndNullableEnumSerializer()
-        {
-            InitializeEnumSerializer();
             //ServiceStack.Text will never use the serialize / deserialize fn if the value is null 
             //or the text is null or empty.
             JsConfig<TEnum?>.Reset();

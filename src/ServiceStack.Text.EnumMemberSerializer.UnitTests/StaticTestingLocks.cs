@@ -1,8 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
+﻿namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 {
-    [ExcludeFromCodeCoverage]
     public static class StaticTestingLocks
     {
         public static object JsConfigLockObject = new object();

@@ -7,3 +7,5 @@
 /src/*.suo
 /ssTextv4Test
 /src/*.user
+/tools
+/dotcover
