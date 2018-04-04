@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
     <Authors>Chatham Financial Corp.</Authors>
     <Copyright>Copyright 2017 Chatham Financial Corp.</Copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -15,7 +15,14 @@
     <Description>Extension for ServiceStack.Text to allow using EnumMember attributes to serialize and deserialize enumerations.</Description>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.3|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\Debug\net45\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="ServiceStack.Text" Version="5.0.2" />
     <PackageReference Include="ServiceStack.Text.Core" Version="1.0.1" Condition="'$(TargetFramework)' == 'netstandard1.3'" />
     <PackageReference Include="ServiceStack.Text" Version="3.9.44" Condition="'$(TargetFramework)' == 'net45'" />
   </ItemGroup>
