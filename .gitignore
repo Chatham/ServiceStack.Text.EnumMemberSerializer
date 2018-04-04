@@ -9,3 +9,4 @@
 /src/*.user
 /tools
 /dotcover
+/src/.vs/ServiceStack.Text.EnumMemberSerializer/v15
