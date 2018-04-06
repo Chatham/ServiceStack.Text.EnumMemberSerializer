@@ -27,12 +27,6 @@ namespace ServiceStack.Text.EnumMemberSerializer
         IEnumSerializerConfigurator WithEnumTypes(ICollection<Type> enumTypes);
 
         /// <summary>
-        /// This will configure the nullable enumeration as well as the non-nullable enumeration (recommended).
-        /// </summary>
-        [Obsolete("Nullable enumerations are always configured.")]
-        IEnumSerializerConfigurator WithNullableEnumSerializers();
-
-        /// <summary>
         ///     Perform configuration action.
         /// </summary>
         void Configure();

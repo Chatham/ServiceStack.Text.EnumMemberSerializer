@@ -3,8 +3,8 @@
 
 var target = Argument("target", "Default");
 var buildConfiguration = Argument("configuration", "Release");
-var majorMinorVersion = "2.0";
-var baseDate = new DateTime(2017,06,19,0,0,0,0,DateTimeKind.Utc);
+var majorMinorVersion = "3.0";
+var baseDate = new DateTime(2018,04,06,0,0,0,0,DateTimeKind.Utc);
 var elapsedSinceBaseDate = DateTime.UtcNow - baseDate;
 var days = (int)elapsedSinceBaseDate.TotalDays;
 var revision = (int)(elapsedSinceBaseDate.Subtract(TimeSpan.FromDays(days)).TotalSeconds / 1.5);
@@ -67,13 +67,10 @@ Task("Test")
 
   var coverSettings = new DotCoverCoverSettings()
     .WithFilter("-:*Tests")
-    .WithFilter("-:ServiceStack.Text");
-
-  var coverageResult46 = new FilePath("./dotcover/dotcover46.data");
-  DotCoverCover(
-    ctx => runTests(ctx, "net46"), 
-    coverageResult46, 
-    coverSettings);
+    .WithFilter("-:ServiceStack.Text")
+    .WithFilter("-:NuGet*")
+    .WithFilter("-:xunit*")
+    .WithFilter("-:MSBuild*");
 
   var coverageResult452 = new FilePath("./dotcover/dotcover452.data");
   DotCoverCover(
@@ -87,13 +84,19 @@ Task("Test")
     coverageResultCoreApp, 
     coverSettings);
 
+  var coverageResultCoreApp20 = new FilePath("./dotcover/dotcoverCoreApp20.data");
+  DotCoverCover(
+    ctx => runTests(ctx, "netcoreapp2.0"), 
+    coverageResultCoreApp20, 
+    coverSettings);
+
   var mergedData = new FilePath("./dotcover/dotcoverMerged.data");
 
   DotCoverMerge(
     new []{
-      coverageResult46, 
-      coverageResult452, 
-      coverageResultCoreApp
+      coverageResult452,
+      coverageResultCoreApp,
+      coverageResultCoreApp20
     }, 
     mergedData, 
     new DotCoverMergeSettings());

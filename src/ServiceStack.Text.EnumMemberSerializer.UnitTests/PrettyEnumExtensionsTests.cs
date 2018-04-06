@@ -54,7 +54,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 Assert.Throws<InvalidOperationException>(() =>
                 {
                     const int someNumber = 0;
-                    var actualDescription = someNumber.GetOptimalEnumDescription();
+                    var _ = someNumber.GetOptimalEnumDescription();
                 });
             }
         }

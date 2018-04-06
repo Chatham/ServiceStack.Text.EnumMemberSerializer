@@ -13,7 +13,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             List<TypeInfo> nullTypeInfoList = null;
             var publicEnums = nullTypeInfoList.GetPublicEnums();
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
 
         [Fact]
@@ -21,7 +21,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             List<Type> nullTypeList = null;
             var publicEnums = nullTypeList.GetPublicEnums();
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             var typeList = new List<Type>();
             var publicEnums = typeList.GetPublicEnums();
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             var typeList = new List<Type> { typeof(NonPublicEnum) };
             var publicEnums = typeList.GetPublicEnums();
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             var typeList = new List<Type> { typeof(NonPublicEnum), typeof(FakeTestingEnum) };
             var publicEnums = typeList.GetPublicEnums();
-            Assert.Equal(1, publicEnums.Count);
+            Assert.Single(publicEnums);
             Assert.Equal(typeof(FakeTestingEnum), publicEnums.First());
         }
 
@@ -54,7 +54,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             var typeList = new List<Type> { typeof(string), typeof(DateTime) };
             var publicEnums = typeList.GetPublicEnums();
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             var typeList = new List<Type> { null };
             var publicEnums = typeList.GetPublicEnums();
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
     }
 }

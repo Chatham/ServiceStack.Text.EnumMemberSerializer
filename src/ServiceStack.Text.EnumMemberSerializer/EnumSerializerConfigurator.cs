@@ -78,15 +78,6 @@ namespace ServiceStack.Text.EnumMemberSerializer
         }
 
         /// <summary>
-        ///     This will configure the nullable enumeration as well as the non-nullable enumeration (recommended).
-        /// </summary>
-        [Obsolete("Nullable enumerations are always configured.")]
-        public IEnumSerializerConfigurator WithNullableEnumSerializers()
-        {
-            return this;
-        }
-
-        /// <summary>
         ///     Configures ServiceStack JsConfig with the custom enumeration serializers.
         /// </summary>
         public void Configure()

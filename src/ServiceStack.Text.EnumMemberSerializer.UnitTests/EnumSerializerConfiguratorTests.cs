@@ -18,7 +18,6 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
 
                 new EnumSerializerConfigurator()
                     .WithAssemblies(new[] {typeof(FakeTestingEnum).GetTypeInfo().Assembly})
-                    .WithNullableEnumSerializers()
                     .Configure();
 
                 Func<FakeTestingEnum, string> expectedSerializeFunc =
@@ -44,13 +43,13 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var proxyFake = new EnumSerializerInitializerProxyFake();
 
             new EnumSerializerConfigurator {JsConfigProxy = proxyFake}
-                .WithAssemblies(new[] { typeof(WhereTheEnumHasNoNamespace).GetTypeInfo().Assembly})
+                .WithAssemblies(new[] {typeof(WhereTheEnumHasNoNamespace).GetTypeInfo().Assembly})
                 .Configure();
 
             Assert.Equal(3, proxyFake.ConfigedTypes.Count);
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof (WhereTheEnumHasNoNamespace)));
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof (FakeTestingEnum)));
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof (DifferentNamespaceEnum)));
+            Assert.Contains(typeof(WhereTheEnumHasNoNamespace), proxyFake.ConfigedTypes);
+            Assert.Contains(typeof(FakeTestingEnum), proxyFake.ConfigedTypes);
+            Assert.Contains(typeof(DifferentNamespaceEnum), proxyFake.ConfigedTypes);
         }
 
         [Fact]
@@ -65,8 +64,8 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 .Configure();
 
             Assert.Equal(2, proxyFake.ConfigedTypes.Count);
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(FakeTestingEnum)));
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(DifferentNamespaceEnum)));
+            Assert.Contains(typeof(FakeTestingEnum), proxyFake.ConfigedTypes);
+            Assert.Contains(typeof(DifferentNamespaceEnum), proxyFake.ConfigedTypes);
         }
 
         [Fact]
@@ -80,8 +79,8 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 .Configure();
 
             Assert.Equal(2, proxyFake.ConfigedTypes.Count);
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(FakeTestingEnum)));
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(DifferentNamespaceEnum)));
+            Assert.Contains(typeof(FakeTestingEnum), proxyFake.ConfigedTypes);
+            Assert.Contains(typeof(DifferentNamespaceEnum), proxyFake.ConfigedTypes);
         }
 
         [Fact]
@@ -97,9 +96,9 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 .Configure();
 
             Assert.Equal(3, proxyFake.ConfigedTypes.Count);
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(FakeTestingEnum)));
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(DifferentNamespaceEnum)));
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(DateTimeKind)));
+            Assert.Contains(typeof(FakeTestingEnum), proxyFake.ConfigedTypes);
+            Assert.Contains(typeof(DifferentNamespaceEnum), proxyFake.ConfigedTypes);
+            Assert.Contains(typeof(DateTimeKind), proxyFake.ConfigedTypes);
         }
 
         [Fact]
@@ -114,8 +113,8 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 .Configure();
 
             Assert.Equal(2, proxyFake.ConfigedTypes.Count);
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(DifferentNamespaceEnum)));
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(DateTimeKind)));
+            Assert.Contains(typeof(DifferentNamespaceEnum), proxyFake.ConfigedTypes);
+            Assert.Contains(typeof(DateTimeKind), proxyFake.ConfigedTypes);
         }
 
         [Fact]
@@ -128,8 +127,8 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
                 .WithNamespaceFilter(ns => ns.StartsWith("SomeOtherNamespace"))
                 .Configure();
 
-            Assert.Equal(1, proxyFake.ConfigedTypes.Count);
-            Assert.True(proxyFake.ConfigedTypes.Contains(typeof(DateTimeKind)));
+            Assert.Single(proxyFake.ConfigedTypes);
+            Assert.Contains(typeof(DateTimeKind), proxyFake.ConfigedTypes);
         }
     }
 }

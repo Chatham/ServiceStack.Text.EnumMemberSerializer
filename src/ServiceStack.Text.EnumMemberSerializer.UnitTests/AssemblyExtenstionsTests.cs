@@ -17,9 +17,9 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var publicEnums = assemblies.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
 
             Assert.Equal(3, publicEnums.Count);
-            Assert.True(publicEnums.Contains(typeof (WhereTheEnumHasNoNamespace)));
-            Assert.True(publicEnums.Contains(typeof (FakeTestingEnum)));
-            Assert.True(publicEnums.Contains(typeof (DifferentNamespaceEnum)));
+            Assert.Contains(typeof(WhereTheEnumHasNoNamespace), publicEnums);
+            Assert.Contains(typeof(FakeTestingEnum), publicEnums);
+            Assert.Contains(typeof(DifferentNamespaceEnum), publicEnums);
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var assemblies = new List<Assembly> { typeof(WhereTheEnumHasNoNamespace).GetTypeInfo().Assembly};
             var publicEnums = assemblies.GetPublicEnums(s => s.StartsWith("SomeOtherNamespace"));
 
-            Assert.Equal(1, publicEnums.Count);
+            Assert.Single(publicEnums);
             Assert.Equal(typeof (DifferentNamespaceEnum), publicEnums.First());
         }
 
@@ -40,9 +40,9 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var publicEnums = assemblies.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
 
             Assert.Equal(3, publicEnums.Count);
-            Assert.True(publicEnums.Contains(typeof (WhereTheEnumHasNoNamespace)));
-            Assert.True(publicEnums.Contains(typeof (FakeTestingEnum)));
-            Assert.True(publicEnums.Contains(typeof (DifferentNamespaceEnum)));
+            Assert.Contains(typeof(WhereTheEnumHasNoNamespace), publicEnums);
+            Assert.Contains(typeof(FakeTestingEnum), publicEnums);
+            Assert.Contains(typeof(DifferentNamespaceEnum), publicEnums);
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             var emptyAssemblyList = new List<Assembly>();
             var publicEnums = emptyAssemblyList.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
         {
             List<Assembly> emptyAssemblyList = null;
             var publicEnums = emptyAssemblyList.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
 
         [Fact]
@@ -68,9 +68,9 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var publicEnums = assemblies.GetPublicEnums(null);
 
             Assert.Equal(3, publicEnums.Count);
-            Assert.True(publicEnums.Contains(typeof (WhereTheEnumHasNoNamespace)));
-            Assert.True(publicEnums.Contains(typeof (FakeTestingEnum)));
-            Assert.True(publicEnums.Contains(typeof (DifferentNamespaceEnum)));
+            Assert.Contains(typeof(WhereTheEnumHasNoNamespace), publicEnums);
+            Assert.Contains(typeof(FakeTestingEnum), publicEnums);
+            Assert.Contains(typeof(DifferentNamespaceEnum), publicEnums);
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var assemblies = new List<Assembly> {typeof(WhereTheEnumHasNoNamespace).GetTypeInfo().Assembly};
             var publicEnums = assemblies.GetPublicEnums(s => false);
 
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             var assemblies = new List<Assembly> {null};
             var publicEnums = assemblies.GetPublicEnums(EnumSerializerConfigurator.AlwaysTrueFilter);
 
-            Assert.Equal(0, publicEnums.Count);
+            Assert.Empty(publicEnums);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace ServiceStack.Text.EnumMemberSerializer.UnitTests
             Assert.Throws<NotImplementedException>(
                 () =>
                 {
-                    assemblies.GetPublicEnums(s => { throw new NotImplementedException(); });
+                    assemblies.GetPublicEnums(s => throw new NotImplementedException());
                 });
         }
 
