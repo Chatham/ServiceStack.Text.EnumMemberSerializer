@@ -3,9 +3,7 @@ ServiceStack.Text.EnumMemberSerializer
 
 Extension for [`ServiceStack.Text`](https://github.com/ServiceStack/ServiceStack.Text) (including `ServiceStack.Text.Core`) to allow using [`EnumMemberAttribute`](http://msdn.microsoft.com/en-us/library/system.runtime.serialization.enummemberattribute.aspx) to serialize and deserialize enumerations. This allows you to use more human readable values while still leveraging the benefits of using enumerations.
 
-Custom enumeration serialization currently only applies to the json serializer. It works by assigning custom delegates to [`JsConfig<T>.SerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs) and [`JsConfig<T>.DeSerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs). 
-
-Nullable enumerations are now always configured. `WithNullableEnumSerializers()` method on the `EnumMemberConfigurator` remains with an `[Obsolete]` attribute to minimize disruption when upgrading.
+Custom enumeration serialization currently only applies to the json serializer. It works by assigning custom delegates to [`JsConfig<T>.SerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs) and [`JsConfig<T>.DeSerializeFn`](https://github.com/ServiceStack/ServiceStack.Text/blob/master/src/ServiceStack.Text/JsConfig.cs). Nullable enumerations are also configured. 
 
 # Example Configuration
 
@@ -105,7 +103,6 @@ Without ServiceStack.Text.EnumMemberSerializer:
 * This manipulates the static `JsConfig<T>`. Other code called later may overwrite the custom serialization/deserialization delegates.
 * Both `.WithEnumTypes()` and `.WithAssemblies()` may be used at the same time, the results will be combined.
 * `Configure()` should be called before serializing/deserializing anything with `ServiceStack.Text` or the custom methods may not be setup correctly in `JsConfig`
-* Unit Tests pass using ServiceStack v4.
 
 # Using the Code
 
@@ -114,5 +111,5 @@ Without ServiceStack.Text.EnumMemberSerializer:
   * It will create NuGet packages you can consume in `.\ReleasePackages` or you can directly use the resulting binaries. 
 * Build requirements
   * .Net Framework 4.6
-  * .Net Core
+  * .Net Core 2.0
   * Powershell
